@@ -1,0 +1,64 @@
+package com.example.tweenanim;
+
+import java.util.Random;
+
+import android.app.Activity;
+import android.graphics.drawable.Animatable;
+import android.os.Bundle;
+import android.text.Layout;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+public class MainActivity extends Activity {
+	private ImageView iv;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		iv = (ImageView) findViewById(R.id.iv);
+		for (int j = 0; j < 7; j++) {
+			LinearLayout lls = new LinearLayout(this);
+			lls.setOrientation(LinearLayout.VERTICAL);
+			for (int i = 0; i < 7; i++) {
+				ImageView ivs = new ImageView(MainActivity.this);
+				ivs.setImageResource(R.drawable.ic_launcher);
+				lls.addView(ivs);
+				alpha(ivs, j, i);
+			}
+			ll.addView(lls);
+		}
+
+	}
+
+	/**
+	 * 透明度变化
+	 * 
+	 * @param view
+	 */
+
+	public void click1(View view) {
+		// 透明度类(开始透明度,最终透明度)
+		AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+		// 动画的持续时间
+		animation.setDuration(200);
+		animation.setRepeatCount(Animation.INFINITE);
+		animation.setRepeatMode(Animation.REVERSE);
+		iv.startAnimation(animation);
+	}
+
+	public void alpha(ImageView i, int jj, int ii) {
+		AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+		Random random = new Random();
+		// 动画的持续时间
+		animation.setDuration(random.nextInt(500)+100);
+		animation.setRepeatCount(Animation.INFINITE);
+		animation.setRepeatMode(Animation.REVERSE);
+		i.startAnimation(animation);
+	}
+
+}

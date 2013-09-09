@@ -1,0 +1,48 @@
+package com.example.aidlclient;
+
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.view.View;
+
+import com.example.aidl.IAlipayServiceBinder;
+
+public class MainActivity extends Activity {
+	private Intent intent;
+	private IAlipayServiceBinder iAlipayServiceBinder;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		intent = new Intent();
+		intent.setAction("com.dolph.alipay");
+	}
+
+	public void bind(View view) {
+		bindService(intent, new Conn(), BIND_AUTO_CREATE);
+	}
+
+	public void call(View view) {
+		
+	}
+
+	private class Conn implements ServiceConnection {
+
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			iAlipayServiceBinder = IAlipayServiceBinder.Stub
+					.asInterface(service);
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+
+		}
+
+	}
+
+}

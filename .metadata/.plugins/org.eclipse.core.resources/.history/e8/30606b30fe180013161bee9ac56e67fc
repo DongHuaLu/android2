@@ -1,0 +1,91 @@
+package com.example.expandablelistview;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListAdapter;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		ExpandableListAdapter adpater = new BaseExpandableListAdapter() {
+
+			private String gropu[] = { "组1", "组2", "组3" };
+
+			private String items[][] = { { "组1-1", "组1-2" },
+					{ "组2-1", "组2-2", "组2-3" },
+					{ "组3-1", "组3-2", "组3-3", "组3-4" } };
+
+			@Override
+			public boolean isChildSelectable(int groupPosition,
+					int childPosition) {
+				return false;
+			}
+
+			@Override
+			public boolean hasStableIds() {
+				return false;
+			}
+
+			@Override
+			public View getGroupView(int groupPosition, boolean isExpanded,
+					View convertView, ViewGroup parent) {
+				return null;
+			}
+
+			@Override
+			public long getGroupId(int groupPosition) {
+				return 0;
+			}
+
+			@Override
+			public int getGroupCount() {
+				return 0;
+			}
+
+			@Override
+			public Object getGroup(int groupPosition) {
+				return null;
+			}
+
+			@Override
+			public int getChildrenCount(int groupPosition) {
+				return items[groupPosition].length;
+			}
+
+			@Override
+			public View getChildView(int groupPosition, int childPosition,
+					boolean isLastChild, View convertView, ViewGroup parent) {
+				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
+						ViewGroup.LayoutParams.FILL_PARENT, 64);
+				TextView textView = new TextView(MainActivity.this);
+				textView.setLayoutParams(lp);
+				textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+				textView.setPadding(36, 0, 0, 0);
+				textView.setTextSize(20);
+				textView.setText(getChild(groupPosition,childPosition).toString());
+				return null;
+			}
+
+			@Override
+			public long getChildId(int groupPosition, int childPosition) {
+				return childPosition;
+			}
+
+			// 获取groupPosition,childPosition位置的对象
+			@Override
+			public Object getChild(int groupPosition, int childPosition) {
+				return items[groupPosition][childPosition];
+			}
+		};
+	}
+}

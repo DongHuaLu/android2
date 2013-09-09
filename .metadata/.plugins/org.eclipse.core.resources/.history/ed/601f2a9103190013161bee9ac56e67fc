@@ -1,0 +1,51 @@
+package com.example.gridviewimageswitcher;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.GridView;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.ViewSwitcher.ViewFactory;
+
+public class MainActivity extends Activity {
+	private ImageSwitcher switcher;
+	private GridView grid;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		List<Map<String, Object>> listItems = new ArrayList<Map<String, Object>>();
+
+		for (int i = 0; i < 12; i++) {
+			Map<String, Object> listItem = new HashMap<String, Object>();
+			listItem.put("image", R.drawable.ic_launcher);
+			listItems.add(listItem);
+		}
+
+		switcher = (ImageSwitcher) findViewById(R.id.sitcher);
+		// 设置更换的动画效果
+		switcher.setInAnimation(AnimationUtils.loadAnimation(this,
+				android.R.anim.fade_in));
+		switcher.setOutAnimation(AnimationUtils.loadAnimation(this,
+				android.R.anim.fade_out));
+
+		// 设置切换动画
+		switcher.setFactory(new ViewFactory() {
+
+			@Override
+			public View makeView() {
+				ImageView iv = new ImageView(MainActivity.this);
+				return null;
+			}
+		});
+
+	}
+}

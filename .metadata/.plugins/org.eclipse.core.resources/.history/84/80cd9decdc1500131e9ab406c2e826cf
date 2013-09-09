@@ -1,0 +1,134 @@
+package com.example.manyalphaanimation;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+public class MainActivity extends Activity {
+	private ImageView iv;
+	private ViewGroup ll;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		iv = (ImageView) findViewById(R.id.iv);
+		ll = (ViewGroup) findViewById(R.id.ll);
+	}
+
+	/**
+	 * 透明度变化
+	 * 
+	 * @param view
+	 */
+
+	public void click1(View view) {
+		ll.removeAllViewsInLayout();
+		for (int j = 0; j < 7; j++) {
+			LinearLayout lls = new LinearLayout(this);
+			lls.setOrientation(LinearLayout.VERTICAL);
+			for (int i = 0; i < 7; i++) {
+				ImageView ivs = new ImageView(MainActivity.this);
+				ivs.setImageResource(R.drawable.ic_launcher);
+				lls.addView(ivs);
+				alpha(ivs, j, i);
+			}
+			ll.addView(lls);
+		}
+	}
+
+	public void click2(View view) {
+		ll.removeAllViewsInLayout();
+		for (int j = 0; j < 7; j++) {
+			LinearLayout lls = new LinearLayout(this);
+			lls.setOrientation(LinearLayout.VERTICAL);
+			for (int i = 0; i < 7; i++) {
+				ImageView ivs = new ImageView(MainActivity.this);
+				ivs.setImageResource(R.drawable.ic_launcher);
+				lls.addView(ivs);
+				scale(ivs, j, i);
+			}
+			ll.addView(lls);
+		}
+	}
+
+	public void click3(View view) {
+		ll.removeAllViewsInLayout();
+		for (int j = 0; j < 7; j++) {
+			LinearLayout lls = new LinearLayout(this);
+			lls.setOrientation(LinearLayout.VERTICAL);
+			for (int i = 0; i < 7; i++) {
+				ImageView ivs = new ImageView(MainActivity.this);
+				ivs.setImageResource(R.drawable.ic_launcher);
+				lls.addView(ivs);
+				rotate(ivs, j, i);
+			}
+			ll.addView(lls);
+		}
+	}
+	public void click4(View view) {
+		ll.removeAllViewsInLayout();
+		for (int j = 0; j < 7; j++) {
+			LinearLayout lls = new LinearLayout(this);
+			lls.setOrientation(LinearLayout.VERTICAL);
+			for (int i = 0; i < 7; i++) {
+				ImageView ivs = new ImageView(MainActivity.this);
+				ivs.setImageResource(R.drawable.ic_launcher);
+				lls.addView(ivs);
+				trans(ivs, j, i);
+			}
+			ll.addView(lls);
+		}
+	}
+
+	public void alpha(ImageView i, int jj, int ii) {
+		AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+		Random random = new Random();
+		// 动画的持续时间
+		animation.setDuration(random.nextInt(500) + 100);
+		animation.setRepeatCount(Animation.INFINITE);
+		animation.setRepeatMode(Animation.REVERSE);
+		i.startAnimation(animation);
+	}
+
+	public void scale(ImageView i, int jj, int ii) {
+		Random random = new Random();
+		ScaleAnimation animation = new ScaleAnimation(random.nextFloat(),
+				random.nextFloat() + 1, random.nextFloat(),
+				random.nextFloat() + 1, Animation.RELATIVE_TO_SELF,
+				random.nextFloat(), Animation.RELATIVE_TO_SELF,
+				random.nextFloat());
+		animation.setDuration(random.nextInt(500) + 100);
+		animation.setRepeatCount(Animation.INFINITE);
+		animation.setRepeatMode(Animation.REVERSE);
+		i.startAnimation(animation);
+	}
+
+	public void rotate(ImageView i, int jj, int ii) {
+		Random random = new Random();
+		RotateAnimation animation = new RotateAnimation(random.nextInt(100),
+				random.nextInt(360), Animation.RELATIVE_TO_SELF,
+				random.nextFloat(), Animation.RELATIVE_TO_SELF,
+				random.nextFloat());
+		animation.setDuration(random.nextInt(500) + 100);
+		animation.setRepeatCount(Animation.INFINITE);
+		animation.setRepeatMode(Animation.REVERSE);
+		i.startAnimation(animation);
+	}
+
+	public void trans(ImageView i, int jj, int ii) {
+
+	}
+
+}

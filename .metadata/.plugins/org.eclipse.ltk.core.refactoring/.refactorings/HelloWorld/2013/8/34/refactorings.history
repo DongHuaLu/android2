@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;R.java&apos; to &apos;电话拨号器/gen/com.dolph.dail&apos;&#x0D;&#x0A;- Original project: &apos;HelloWorld&apos;&#x0D;&#x0A;- Destination element: &apos;电话拨号器/gen/com.dolph.dail&apos;&#x0D;&#x0A;- Original element: &apos;com.example.helloworld.R.java&apos;" description="Copy compilation unit" destination="=电话拨号器/gen&lt;com.dolph.dail" element1="/gen&lt;com.example.helloworld{R.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1376964538414" units="1" version="1.0"/>
+</session>
