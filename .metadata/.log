@@ -6861,3 +6861,9 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-09-10 09:08:34.500
+!MESSAGE Failed to load properties file for project '08PreferenceActivity'
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-09-10 09:26:52.321
+!MESSAGE Failed to load properties file for project '08OtherActivity'
