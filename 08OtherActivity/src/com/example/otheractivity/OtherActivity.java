@@ -19,6 +19,7 @@ public class OtherActivity extends LauncherActivity {
 				android.R.layout.simple_list_item_1, names);
 		// 设置该窗口显示的列表所需的Adapter
 		setListAdapter(adapter);
+		Intent intent=new Intent();
 	}
 
 	// 根据列表项来返回指定Activity对应的Intent

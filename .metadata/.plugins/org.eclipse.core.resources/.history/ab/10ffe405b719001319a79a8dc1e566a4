@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string-array name="gender_name_list">
-        <item name="gender_name_value">男</item>
-        <item name="gender_name_value">女</item>
-    </string-array>
-
-</resources>
