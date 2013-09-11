@@ -20,7 +20,7 @@
         <activity
             android:name="com.example.otheractivity.OtherActivity"
             android:icon="@drawable/ic_launcher"
-            android:label="OtherActivity" >
+            android:label="08OtherActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

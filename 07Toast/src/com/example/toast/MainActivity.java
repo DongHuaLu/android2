@@ -1,6 +1,7 @@
 package com.example.toast;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -22,7 +23,6 @@ public class MainActivity extends Activity {
 		Toast toast = Toast.makeText(this, "带图片的toast", 1);
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		View toastView = toast.getView();
-
 		ImageView iv = new ImageView(this);
 		iv.setImageResource(R.drawable.ic_launcher);
 		LinearLayout ll = new LinearLayout(this);

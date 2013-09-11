@@ -1,10 +1,9 @@
 package com.example.tabhost;
 
-import android.os.Bundle;
-import android.app.Activity;
 import android.app.TabActivity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.widget.TabHost;
 
 public class MainActivity extends TabActivity {
@@ -23,6 +22,8 @@ public class MainActivity extends TabActivity {
 				.setIndicator("这是1",
 						getResources().getDrawable(R.drawable.ic_launcher))
 				.setContent(R.id.ll01));
+		// 可以通过intent设置某个activity到tab中
+		// .setContent(new Intent(this, MainActivity.class)));
 
 		tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("这是2")
 				.setContent(R.id.ll02));
@@ -30,7 +31,6 @@ public class MainActivity extends TabActivity {
 				.setContent(R.id.ll03));
 		tabHost.addTab(tabHost.newTabSpec("tab4").setIndicator("这是4")
 				.setContent(R.id.ll04));
-
 
 	}
 }
