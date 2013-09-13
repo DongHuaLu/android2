@@ -1,5 +1,15 @@
 package com.dolph.twilioapp.activity.call;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
@@ -12,12 +22,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
-import com.dolph.utils.Utils;
+import com.dolph.twilioapp.twilio.CallPhoneService;
+import com.dolph.utils.HttpUtils;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 public class CallActivity extends FragmentActivity {
 
@@ -40,14 +53,21 @@ public class CallActivity extends FragmentActivity {
 
 		private String number = "";
 		private EditText screenEditText;
+		private ProgressDialog pDialog;
 		private boolean isActivity;
+
+		private CallPhoneService twilioService;
+		private AppValues appValues;
 
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
+			twilioService = new CallPhoneService(getActivity()
+					.getApplicationContext());
 			Bundle bundle = getArguments();
 			number = bundle.getString("number");
 			isActivity = bundle.getBoolean("isActivity");
+			appValues = new AppValues(getActivity().getApplicationContext());
 		}
 
 		@Override
@@ -199,8 +219,36 @@ public class CallActivity extends FragmentActivity {
 					if (number.startsWith("+1")) {
 						number = number.substring(2);
 					}
-					if (Utils.validatePhone(number)) {
+					// if (Utils.validatePhone(number)) {
+					if (true) {
+						try {
+							twilioService.connect(number);
+							new AlertDialog.Builder(getActivity())
+									.setTitle("拨打中")
+									.setNegativeButton("挂断",
+											new OnClickListener() {
 
+												@Override
+												public void onClick(
+														DialogInterface dialog,
+														int which) {
+													twilioService.disconnect();
+												}
+											}).create().show();
+						} catch (Exception e) {
+							new AlertDialog.Builder(getActivity())
+									.setTitle("拨打失败")
+									.setNegativeButton("确定",
+											new OnClickListener() {
+
+												@Override
+												public void onClick(
+														DialogInterface dialog,
+														int which) {
+												}
+											}).create().show();
+							e.printStackTrace();
+						}
 					} else {
 						Toast.makeText(getActivity(),
 								"Please enter a valid phone number",
@@ -234,6 +282,130 @@ public class CallActivity extends FragmentActivity {
 						}
 					});
 
+			Button addCotactButton = (Button) view
+					.findViewById(R.id.btAddContact);
+
+			/************************* 保存联系人 *******************************/
+			addCotactButton.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (screenEditText.getText().toString().trim() != null
+							&& !"".equals(screenEditText.getText().toString()
+									.trim())) {
+						AlertDialog.Builder builder = new Builder(getActivity());
+						LinearLayout ll = new LinearLayout(getActivity());
+						ll.setOrientation(LinearLayout.VERTICAL);
+						final EditText editTextContactName = new EditText(
+								getActivity().getApplicationContext());
+						final EditText editTextContactAddress = new EditText(
+								getActivity().getApplicationContext());
+						editTextContactName.setTextColor(Color.BLACK);
+						editTextContactAddress.setTextColor(Color.BLACK);
+						editTextContactName.setHint("请输入联系人名称");
+						editTextContactAddress.setHint("联系人地址");
+						ll.addView(editTextContactName);
+						ll.addView(editTextContactAddress);
+						builder.setTitle("保存联系人");
+						builder.setMessage("请输入联系人信息");
+						builder.setView(ll);
+						builder.setPositiveButton("保存", new OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								pDialog = ProgressDialog.show(getActivity(),
+										"保存联系人", "正在保存...");
+								RequestParams params = new RequestParams();
+								params.put("userId",
+										appValues.getCurrentUserId() + "");
+								params.put("contactName", editTextContactName
+										.getText().toString().trim());
+								params.put("contactNumber", screenEditText
+										.getText().toString().trim());
+								params.put("address", editTextContactAddress
+										.getText().toString().trim());
+								HttpUtils
+										.get("http://10.200.0.157:8080/TwilioServer01/AddContact?",
+												params,
+												new AsyncHttpResponseHandler() {
+
+													@Override
+													public void onSuccess(
+															String content) {
+														super.onSuccess(content);
+														pDialog.dismiss();
+														JSONTokener jsonParser = new JSONTokener(
+																content);
+														JSONObject json;
+														try {
+															json = (JSONObject) jsonParser
+																	.nextValue();
+															String state = json
+																	.getString("state");
+															if ("err"
+																	.equals(state)) {
+																AlertDialog.Builder builder = new Builder(
+																		getActivity());
+																builder.setTitle("提示");
+																builder.setMessage(json
+																		.getString("response"));
+																builder.setPositiveButton(
+																		"确定",
+																		new OnClickListener() {
+
+																			@Override
+																			public void onClick(
+																					DialogInterface dialog,
+																					int which) {
+																			}
+																		});
+																builder.show();
+															} else if ("ok"
+																	.equals(state)) {
+																Toast.makeText(
+																		getActivity(),
+																		json.getString("response"),
+																		0)
+																		.show();
+															}
+														} catch (JSONException e) {
+															e.printStackTrace();
+														}
+													}
+
+													@Override
+													protected void sendFailureMessage(
+															Throwable e,
+															String responseBody) {
+														super.sendFailureMessage(
+																e, responseBody);
+														pDialog.dismiss();
+														Toast.makeText(
+																getActivity(),
+																"网络错误", 0)
+																.show();
+													}
+
+												});
+
+							}
+						});
+						builder.setNegativeButton("取消", new OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+
+							}
+						});
+						builder.create().show();
+					} else {
+						Toast.makeText(getActivity(), "保存的电话不能为空", 0).show();
+					}
+				}
+			});
+			/************************* 保存联系人 *******************************/
 			return view;
 		}
 

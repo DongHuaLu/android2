@@ -7,12 +7,15 @@ import org.json.JSONTokener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
 import com.dolph.twilioapp.activity.main.NavigationActivity;
+import com.dolph.twilioapp.activity.password.GetForgetCodeActivity;
 import com.dolph.twilioapp.activity.register.GetRegisterCodeActivity;
 import com.dolph.utils.HttpUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -28,8 +32,7 @@ import com.loopj.android.http.RequestParams;
 public class LoginActivity extends Activity {
 	private static final int USERNAME_CANNOT_EMPTY = 0;
 	private static final int PASSWORD_CANNOT_EMPTY = 1;
-	private static final int SERVER_CANNOT_EMPTY = 2;
-	private static final int CORRECT_INPUT = 3;
+	private static final int CORRECT_INPUT = 2;
 
 	private String TAG = "LoginActivity";
 
@@ -42,23 +45,35 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		appValues = new AppValues(this);
+		if (appValues.isLogined()) {
+			autoLogin(appValues.getCurrentUserName(),
+					appValues.getCurrentPassword());
+		}
+	}
+
+	private void autoLogin(String username, String password) {
+		switch (checkData(username, password)) {
+		case USERNAME_CANNOT_EMPTY:
+			return;
+		case PASSWORD_CANNOT_EMPTY:
+			return;
+		case CORRECT_INPUT:
+			autoAssociate(username, password);
+			break;
+		}
+
 	}
 
 	public void login(View view) {
 		EditText usernameEdit = (EditText) findViewById(R.id.editTextUser);
 		EditText passwordEdit = (EditText) findViewById(R.id.editTextPassword);
-		EditText serverEdit = (EditText) findViewById(R.id.editTextServer);
 		switch (checkData(usernameEdit.getText().toString().trim(),
-				passwordEdit.getText().toString().trim(), serverEdit.getText()
-						.toString().trim())) {
+				passwordEdit.getText().toString().trim())) {
 		case USERNAME_CANNOT_EMPTY:
 			Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
 			break;
 		case PASSWORD_CANNOT_EMPTY:
 			Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
-			break;
-		case SERVER_CANNOT_EMPTY:
-			Toast.makeText(this, "服务器不能为空", Toast.LENGTH_SHORT).show();
 			break;
 		case CORRECT_INPUT:
 			associate(usernameEdit.getText().toString().trim(), passwordEdit
@@ -68,12 +83,63 @@ public class LoginActivity extends Activity {
 		}
 	}
 
-	private void associate(String username, String password) {
-		pDialog = ProgressDialog.show(this, "请稍等", "正在向服务器请求");
-		String url = "http://10.200.0.157:8080/TwilioServer01/Login?";
+	private void autoAssociate(String username, String password) {
+		pDialog = ProgressDialog.show(this, "请稍等", "正在自动登录");
+		String url = "http://10.200.0.157:82/TwilioServer01/Login?";
 		RequestParams params = new RequestParams();
 		params.put("username", username);
 		params.put("password", password);
+		appValues.setCurrentPassword(password);
+		HttpUtils.get(url, params, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(String content) {
+				super.onSuccess(content);
+				pDialog.dismiss();
+				try {
+					JSONTokener jsonParser = new JSONTokener(content);
+					JSONObject json = (JSONObject) jsonParser.nextValue();
+					String state = json.getString("state");
+					if ("err".equals(state)) {
+						Toast.makeText(LoginActivity.this, "自动登录失败", 1).show();
+					} else if ("ok".equals(state)) {
+						JSONTokener dataParser = new JSONTokener(json
+								.getString("response"));
+						JSONObject data = (JSONObject) dataParser.nextValue();
+						String currentUserId = data.getString("userId");
+						String currentUserName = data.getString("username");
+						String currentMobilePhone = data
+								.getString("mobile_phone");
+						appValues.setCurrentPhoneNumber(currentMobilePhone);
+						appValues.setCurrentUserName(currentUserName);
+						appValues.setCurrentUserId(Integer
+								.parseInt(currentUserId));
+						appValues.setLogined(true);
+						startNavigation();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable error, String content) {
+				super.onFailure(error, content);
+				pDialog.dismiss();
+				Toast.makeText(LoginActivity.this, "自动登录失败", 0).show();
+			}
+
+		});
+
+	}
+
+	private void associate(String username, String password) {
+		pDialog = ProgressDialog.show(this, "请稍等", "正在向服务器请求");
+		String url = "http://10.200.0.157:82/TwilioServer01/Login?";
+		RequestParams params = new RequestParams();
+		params.put("username", username);
+		params.put("password", password);
+		appValues.setCurrentPassword(password);
 		HttpUtils.get(url, params, new AsyncHttpResponseHandler() {
 
 			@Override
@@ -124,7 +190,7 @@ public class LoginActivity extends Activity {
 				pDialog.dismiss();
 				AlertDialog.Builder builder = new Builder(LoginActivity.this);
 				builder.setTitle("提示");
-				builder.setMessage("连接错误");
+				builder.setMessage("未能连接到服务器");
 				builder.setPositiveButton("确定", new OnClickListener() {
 
 					@Override
@@ -143,13 +209,11 @@ public class LoginActivity extends Activity {
 		startActivity(intent);
 	}
 
-	public int checkData(String username, String password, String server) {
+	public int checkData(String username, String password) {
 		if (TextUtils.isEmpty(username)) {
 			return USERNAME_CANNOT_EMPTY;
 		} else if (TextUtils.isEmpty(password)) {
 			return PASSWORD_CANNOT_EMPTY;
-		} else if (TextUtils.isEmpty(server)) {
-			return SERVER_CANNOT_EMPTY;
 		} else {
 			return CORRECT_INPUT;
 		}
@@ -169,5 +233,35 @@ public class LoginActivity extends Activity {
 				finish();
 			}
 		}
+	}
+
+	public void forgetPassowrd(View view) {
+		Intent intent = new Intent(this, GetForgetCodeActivity.class);
+		startActivity(intent);
+	}
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			ExitDialog(LoginActivity.this).show();
+			return true;
+		}
+
+		return super.onKeyDown(keyCode, event);
+	}
+
+	private Dialog ExitDialog(Context context) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle("系统信息");
+		builder.setMessage("确定要退出程序吗?");
+		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				finish();
+			}
+		});
+		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
+		});
+		return builder.create();
 	}
 }

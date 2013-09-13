@@ -14,7 +14,20 @@ public class AppValues {
 	private static int currentUserId;
 	private static String currentUserName;
 	private static String currentPhoneNumber;
+	private static String currentPassword;
 	private static boolean logined = false;
+
+	public String getCurrentPassword() {
+		if (currentPassword == null || "".equals(currentPassword)) {
+			currentPassword = setting.getSettingString("password", "");
+		}
+		return currentPassword;
+	}
+
+	public void setCurrentPassword(String currentPassword) {
+		setting.setSettingsString("password", currentPassword);
+		AppValues.currentPassword = currentPassword;
+	}
 
 	public String getCurrentUserName() {
 		if (currentUserName == null || "".equals(currentUserName)) {

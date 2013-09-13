@@ -1,11 +1,16 @@
 package com.dolph.twilioapp.activity.main;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.widget.Toast;
+import android.view.KeyEvent;
+import android.view.Window;
 
 import com.dolph.twilioapp.R;
 import com.dolph.twilioapp.activity.call.CallActivity;
@@ -23,6 +28,13 @@ public class NavigationActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_navigation);
 		switchFragment(CALL_FRAGMENT);
+	}
+	
+	
+	public interface RefreshListener {
+		void refreshView();
+
+		void forceRefreshView();
 	}
 
 	FragmentManager fm;
@@ -85,5 +97,30 @@ public class NavigationActivity extends FragmentActivity {
 
 		}
 
+	}
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			ExitDialog(NavigationActivity.this).show();
+			return true;
+		}
+
+		return super.onKeyDown(keyCode, event);
+	}
+
+	private Dialog ExitDialog(Context context) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle("系统信息");
+		builder.setMessage("确定要退出程序吗?");
+		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				finish();
+			}
+		});
+		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
+		});
+		return builder.create();
 	}
 }

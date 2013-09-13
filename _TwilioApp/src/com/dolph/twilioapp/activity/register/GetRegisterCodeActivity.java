@@ -45,7 +45,7 @@ public class GetRegisterCodeActivity extends Activity {
 			Toast.makeText(this, "电话号码不能为空", 0).show();
 			return;
 		} else {
-			String url = "http://10.200.0.157:8080/TwilioServer01/GetRegisterCode?"
+			String url = "http://10.200.0.157:82/TwilioServer01/GetRegisterCode?"
 					+ phoneNumber;
 			RequestParams params = new RequestParams();
 			params.put("mobile_phone", phoneNumber);

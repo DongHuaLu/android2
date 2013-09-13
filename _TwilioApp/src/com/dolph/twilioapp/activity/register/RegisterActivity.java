@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dolph.twilioapp.R;
+import com.dolph.twilioapp.activity.main.SuccessActivity;
 import com.dolph.utils.HttpUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -57,7 +58,7 @@ public class RegisterActivity extends Activity {
 			Toast.makeText(this, "验证错误", 0).show();
 		} else {
 			pDialog = ProgressDialog.show(this, "请稍等", "正在向服务器请求");
-			String url = "http://10.200.0.157:8080/TwilioServer01/Register?";
+			String url = "http://10.200.0.157:82/TwilioServer01/Register?";
 			RequestParams params = new RequestParams();
 			params.put("code", code);
 			params.put("user_name", username);
@@ -72,8 +73,8 @@ public class RegisterActivity extends Activity {
 					pDialog.dismiss();
 					if ("成功".equals(content)) {
 						Intent intent = new Intent(RegisterActivity.this,
-								RegisterSuccessActivity.class);
-						intent.putExtra("username", username);
+								SuccessActivity.class);
+						intent.putExtra("info", username + "注册成功");
 						startActivity(intent);
 					} else {
 						AlertDialog.Builder builder = new Builder(
