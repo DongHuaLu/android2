@@ -1,0 +1,7 @@
+package com.example.drawview;
+
+import android.view.View;
+
+public class DrawView extends View {
+
+}

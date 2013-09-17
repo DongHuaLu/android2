@@ -14,6 +14,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -46,8 +48,7 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		appValues = new AppValues(this);
 		if (appValues.isLogined()) {
-			autoLogin(appValues.getCurrentUserName(),
-					appValues.getCurrentPassword());
+			autoLogin(appValues.getCurrentUserName(), appValues.getCurrentPassword());
 		}
 	}
 
@@ -58,7 +59,9 @@ public class LoginActivity extends Activity {
 		case PASSWORD_CANNOT_EMPTY:
 			return;
 		case CORRECT_INPUT:
-			autoAssociate(username, password);
+			TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+			String id = tm.getDeviceId();
+			autoAssociate(username, password, id);
 			break;
 		}
 
@@ -67,8 +70,7 @@ public class LoginActivity extends Activity {
 	public void login(View view) {
 		EditText usernameEdit = (EditText) findViewById(R.id.editTextUser);
 		EditText passwordEdit = (EditText) findViewById(R.id.editTextPassword);
-		switch (checkData(usernameEdit.getText().toString().trim(),
-				passwordEdit.getText().toString().trim())) {
+		switch (checkData(usernameEdit.getText().toString().trim(), passwordEdit.getText().toString().trim())) {
 		case USERNAME_CANNOT_EMPTY:
 			Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
 			break;
@@ -76,20 +78,23 @@ public class LoginActivity extends Activity {
 			Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
 			break;
 		case CORRECT_INPUT:
-			associate(usernameEdit.getText().toString().trim(), passwordEdit
-					.getText().toString().trim());
+			TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+			String id = tm.getDeviceId();
+			associate(usernameEdit.getText().toString().trim(), passwordEdit.getText().toString().trim(), id);
 			break;
 
 		}
 	}
 
-	private void autoAssociate(String username, String password) {
+	private void autoAssociate(String username, String password, String id) {
 		pDialog = ProgressDialog.show(this, "请稍等", "正在自动登录");
-		String url = "http://10.200.0.157:82/TwilioServer01/Login?";
+		String url = "http://10.200.0.157:82/Login?";
 		RequestParams params = new RequestParams();
 		params.put("username", username);
 		params.put("password", password);
+		params.put("deviceId", id);
 		appValues.setCurrentPassword(password);
+		appValues.setDeviceId(id);
 		HttpUtils.get(url, params, new AsyncHttpResponseHandler() {
 
 			@Override
@@ -103,17 +108,14 @@ public class LoginActivity extends Activity {
 					if ("err".equals(state)) {
 						Toast.makeText(LoginActivity.this, "自动登录失败", 1).show();
 					} else if ("ok".equals(state)) {
-						JSONTokener dataParser = new JSONTokener(json
-								.getString("response"));
+						JSONTokener dataParser = new JSONTokener(json.getString("response"));
 						JSONObject data = (JSONObject) dataParser.nextValue();
 						String currentUserId = data.getString("userId");
 						String currentUserName = data.getString("username");
-						String currentMobilePhone = data
-								.getString("mobile_phone");
+						String currentMobilePhone = data.getString("mobile_phone");
 						appValues.setCurrentPhoneNumber(currentMobilePhone);
 						appValues.setCurrentUserName(currentUserName);
-						appValues.setCurrentUserId(Integer
-								.parseInt(currentUserId));
+						appValues.setCurrentUserId(Integer.parseInt(currentUserId));
 						appValues.setLogined(true);
 						startNavigation();
 					}
@@ -133,13 +135,15 @@ public class LoginActivity extends Activity {
 
 	}
 
-	private void associate(String username, String password) {
+	private void associate(String username, String password, String id) {
 		pDialog = ProgressDialog.show(this, "请稍等", "正在向服务器请求");
-		String url = "http://10.200.0.157:82/TwilioServer01/Login?";
+		String url = "http://10.200.0.157:82/Login?";
 		RequestParams params = new RequestParams();
 		params.put("username", username);
 		params.put("password", password);
+		params.put("deviceId", id);
 		appValues.setCurrentPassword(password);
+		appValues.setDeviceId(id);
 		HttpUtils.get(url, params, new AsyncHttpResponseHandler() {
 
 			@Override
@@ -151,30 +155,25 @@ public class LoginActivity extends Activity {
 					JSONObject json = (JSONObject) jsonParser.nextValue();
 					String state = json.getString("state");
 					if ("err".equals(state)) {
-						AlertDialog.Builder builder = new Builder(
-								LoginActivity.this);
+						AlertDialog.Builder builder = new Builder(LoginActivity.this);
 						builder.setTitle("提示");
 						builder.setMessage(json.getString("response"));
 						builder.setPositiveButton("确定", new OnClickListener() {
 
 							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
+							public void onClick(DialogInterface dialog, int which) {
 							}
 						});
 						builder.show();
 					} else if ("ok".equals(state)) {
-						JSONTokener dataParser = new JSONTokener(json
-								.getString("response"));
+						JSONTokener dataParser = new JSONTokener(json.getString("response"));
 						JSONObject data = (JSONObject) dataParser.nextValue();
 						String currentUserId = data.getString("userId");
 						String currentUserName = data.getString("username");
-						String currentMobilePhone = data
-								.getString("mobile_phone");
+						String currentMobilePhone = data.getString("mobile_phone");
 						appValues.setCurrentPhoneNumber(currentMobilePhone);
 						appValues.setCurrentUserName(currentUserName);
-						appValues.setCurrentUserId(Integer
-								.parseInt(currentUserId));
+						appValues.setCurrentUserId(Integer.parseInt(currentUserId));
 
 						appValues.setLogined(true);
 						startNavigation();

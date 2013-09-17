@@ -20,37 +20,16 @@
             android:maxLines="1"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
-            android:text="loading"
+            android:text="Contacts"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/btSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/tvDC"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="7dp"
-            android:background="@drawable/button_floder_selector" />
-
-        <ImageView
-            android:id="@+id/imageview_org_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignRight="@id/tvDC"
-            android:layout_centerHorizontal="false"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="7dp"
-            android:contentDescription="no_content" />
-
-        <ProgressBar
-            android:id="@+id/pbRefresh"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="7dp"
-            android:layout_toLeftOf="@id/imageview_org_logo" />
+            android:layout_alignParentRight="true"
+            android:onClick="addContact"
+            android:text="添加" />
     </RelativeLayout>
 
     <LinearLayout
@@ -74,7 +53,7 @@
             android:visibility="gone" />
 
         <ListView
-            android:id="@id/android:list"
+            android:id="@+id/contactList"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:divider="@color/divider"

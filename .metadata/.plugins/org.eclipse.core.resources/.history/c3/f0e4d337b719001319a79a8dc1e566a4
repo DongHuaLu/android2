@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+
+    <EditTextPreference
+        android:dialogTitle="你所使用的用户名为"
+        android:key="name"
+        android:summary="请输入用户名"
+        android:title="用户名" />
+
+    <MultiSelectListPreference />
+
+    <RingtonePreference
+        android:key="ring_key"
+        android:ringtoneType="all"
+        android:showDefault="true"
+        android:showSilent="true"
+        android:title="设置铃声" />
+
+
+    <ListPreference
+        android:dialogTitle="ListPreference"
+        android:entries="@array/gender_name_list"
+        android:entryValues="@array/gender_value_list"
+        android:key="gender"
+        android:summary="请选择你的性别"
+        android:title="性别" />
+
+    <PreferenceCategory android:title="系统功能设置组" >
+            <CheckBoxPreference />
+    </PreferenceCategory>
+    
+    
+
+</PreferenceScreen>

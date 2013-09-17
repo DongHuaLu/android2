@@ -46,7 +46,7 @@ public class GetForgetCodeActivity extends Activity {
 			Toast.makeText(this, "电话号码不能为空", 0).show();
 			return;
 		} else {
-			String url = "http://10.200.0.157:82/TwilioServer01/ForgetPasswordGetCode?"
+			String url = "http://10.200.0.157:82/ForgetPasswordGetCode?"
 					+ phoneNumber;
 			RequestParams params = new RequestParams();
 			params.put("mobile_phone", phoneNumber);

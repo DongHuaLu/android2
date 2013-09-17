@@ -4,16 +4,24 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
-import android.view.Window;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.dolph.twilioapp.R;
 import com.dolph.twilioapp.activity.call.CallActivity;
+import com.dolph.twilioapp.activity.contact.ContactListActivity;
+import com.dolph.twilioapp.activity.contact.NewContactActivity;
 
 public class NavigationActivity extends FragmentActivity {
 
@@ -23,14 +31,104 @@ public class NavigationActivity extends FragmentActivity {
 	private final int PAY_FRAGMENT = 4;
 	private final int MORE_FRAGMENT = 5;
 
+	private Fragment lastFragment;
+	private Button btCall, btRecord, btContacts, btPay, btMore;
+	private RelativeLayout callLinearLayout, recordLinearLayout, contactLinearLayout, payLinearLayout, moreLinearLayout;
+	private FrameLayout callFrameLayout, recordFrameLayout, contactFrameLayout, payFrameLayout, moreFrameLayout;
+
+	public void addContact(View view) {
+		Intent intent = new Intent(this, NewContactActivity.class);
+		startActivity(intent);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_navigation);
-		switchFragment(CALL_FRAGMENT);
+		btCall = (Button) findViewById(R.id.btCall);
+		btRecord = (Button) findViewById(R.id.btRecord);
+		btContacts = (Button) findViewById(R.id.btContacts);
+		btPay = (Button) findViewById(R.id.btPay);
+		btMore = (Button) findViewById(R.id.btMore);
+
+		btCall.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchFragment(CALL_FRAGMENT);
+			}
+		});
+		btRecord.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchFragment(RECORD_FRAGMENT);
+			}
+		});
+		btContacts.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchFragment(CONTACTS_FRAGMENT);
+			}
+		});
+		btPay.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchFragment(PAY_FRAGMENT);
+			}
+		});
+		btMore.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchFragment(MORE_FRAGMENT);
+			}
+		});
+
+		callFrameLayout = (FrameLayout) findViewById(R.id.fCall);
+		recordFrameLayout = (FrameLayout) findViewById(R.id.fRecord);
+		contactFrameLayout = (FrameLayout) findViewById(R.id.fContacts);
+		payFrameLayout = (FrameLayout) findViewById(R.id.fPay);
+		moreFrameLayout = (FrameLayout) findViewById(R.id.fMore);
+
+		callLinearLayout = (RelativeLayout) findViewById(R.id.rlCall);
+		recordLinearLayout = (RelativeLayout) findViewById(R.id.rlRecord);
+		contactLinearLayout = (RelativeLayout) findViewById(R.id.rlContacts);
+		payLinearLayout = (RelativeLayout) findViewById(R.id.rlPay);
+		moreLinearLayout = (RelativeLayout) findViewById(R.id.rlMore);
+
+		callLinearLayout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				btCall.performClick();
+			}
+		});
+		recordLinearLayout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				btRecord.performClick();
+			}
+		});
+		contactLinearLayout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				btContacts.performClick();
+			}
+		});
+		payLinearLayout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				btPay.performClick();
+			}
+		});
+		moreLinearLayout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				btMore.performClick();
+			}
+		});
+
+		btCall.performClick();
+
 	}
-	
-	
+
 	public interface RefreshListener {
 		void refreshView();
 
@@ -64,8 +162,7 @@ public class NavigationActivity extends FragmentActivity {
 				ft.hide(fMore);
 			}
 			if (fCall == null) {
-				fCall = Fragment.instantiate(this,
-						CallActivity.CallFragment.class.getName());
+				fCall = Fragment.instantiate(this, CallActivity.CallFragment.class.getName());
 				Bundle args = new Bundle();
 				args.putString("number", "");
 				args.putBoolean("isActivity", false);
@@ -75,24 +172,64 @@ public class NavigationActivity extends FragmentActivity {
 				ft.show(fCall);
 			}
 			ft.commit();
-			// lastFragment = null;
-			// messageFrameLayout.setVisibility(View.GONE);
-			// doctorFrameLayout.setVisibility(View.GONE);
-			// taskFrameLayout.setVisibility(View.GONE);
-			// callFrameLayout.setVisibility(View.VISIBLE);
-			// moreFrameLayout.setVisibility(View.GONE);
-			// messagesButton.setBackgroundResource(R.drawable.tab_messages);
-			// doctorsButton.setBackgroundResource(R.drawable.tab_doctors);
-			// tasksButton.setBackgroundResource(R.drawable.tab_tasks);
-			// callButton.setBackgroundResource(R.drawable.tab_call_press);
-			// moreButton.setBackgroundResource(R.drawable.tab_more);
-			// messageLinearLayout.setBackgroundDrawable(null);
-			// doctorLinearLayout.setBackgroundDrawable(null);
-			// taskLinearLayout.setBackgroundDrawable(null);
-			// callLinearLayout
-			// .setBackgroundResource(R.drawable.footer_menu_bg_select);
-			// moreLinearLayout.setBackgroundDrawable(null);
+			lastFragment = null;
+			callFrameLayout.setVisibility(View.VISIBLE);
+			recordFrameLayout.setVisibility(View.GONE);
+			contactFrameLayout.setVisibility(View.GONE);
+			payFrameLayout.setVisibility(View.GONE);
+			moreFrameLayout.setVisibility(View.GONE);
+			btCall.setBackgroundColor(Color.GREEN);
+			btContacts.setBackgroundColor(Color.BLACK);
+			btRecord.setBackgroundColor(Color.BLACK);
+			btPay.setBackgroundColor(Color.BLACK);
+			btMore.setBackgroundColor(Color.BLACK);
+			callLinearLayout.setBackgroundResource(R.drawable.footer_menu_bg_select);
+			contactLinearLayout.setBackgroundDrawable(null);
+			payLinearLayout.setBackgroundDrawable(null);
+			moreLinearLayout.setBackgroundDrawable(null);
+			recordLinearLayout.setBackgroundDrawable(null);
+			break;
 
+		case CONTACTS_FRAGMENT:
+			if (fRecord != null) {
+				ft.hide(fRecord);
+			}
+			if (fCall != null) {
+				ft.hide(fCall);
+			}
+			if (fPay != null) {
+				ft.hide(fPay);
+			}
+			if (fMore != null) {
+				ft.hide(fMore);
+			}
+			if (fContacts == null) {
+				fContacts = Fragment.instantiate(this, ContactListActivity.ContactListFragment.class.getName());
+				ft.add(R.id.fContacts, fContacts);
+			} else {
+				ft.show(fContacts);
+				if (lastFragment == fContacts) {
+					RefreshListener f = (RefreshListener) lastFragment;
+					f.refreshView();
+				}
+			}
+			ft.commit();
+			lastFragment = fContacts;
+			contactFrameLayout.setVisibility(View.VISIBLE);
+			callFrameLayout.setVisibility(View.GONE);
+			recordFrameLayout.setVisibility(View.GONE);
+			payFrameLayout.setVisibility(View.GONE);
+			moreFrameLayout.setVisibility(View.GONE);
+			btContacts.setBackgroundColor(Color.GREEN);
+			btCall.setBackgroundColor(Color.BLACK);
+			btRecord.setBackgroundColor(Color.BLACK);
+			btPay.setBackgroundColor(Color.BLACK);
+			btMore.setBackgroundColor(Color.BLACK);
+			contactLinearLayout.setBackgroundResource(R.drawable.footer_menu_bg_select);
+			callLinearLayout.setBackgroundDrawable(null);
+			payLinearLayout.setBackgroundDrawable(null);
+			moreLinearLayout.setBackgroundDrawable(null);
+			recordLinearLayout.setBackgroundDrawable(null);
 			break;
 
 		}

@@ -1,0 +1,6 @@
+package com.example.aidl;
+
+public interface IAlipayService {
+	public void callPay();
+
+}

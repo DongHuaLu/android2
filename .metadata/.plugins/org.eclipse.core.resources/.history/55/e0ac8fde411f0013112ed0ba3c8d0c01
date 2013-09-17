@@ -1,0 +1,19 @@
+package com.dolph.twilioapp.activity.contact;
+
+import com.dolph.twilioapp.R;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class ContactActivity extends Activity {
+	private TextView contactName;
+	private TextView contactNumber;
+	private TextView contact
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_contact);
+	}
+}

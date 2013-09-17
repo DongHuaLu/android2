@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dolph.twilioapp"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.dolph.twilioapp.activity.login.LoginActivity"
+            android:label="twilioApp" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.dolph.twilioapp.activity.register.GetRegisterCodeActivity"
+            android:label="得到注册码"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.dolph.twilioapp.activity.register.RegisterActivity"
+            android:label="注册"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.dolph.twilioapp.activity.main.SuccessActivity"
+            android:label="注册成功"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.dolph.twilioapp.activity.password.GetForgetCodeActivity"
+            android:label="忘记密码"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.dolph.twilioapp.activity.password.ResetPasswordActivity"
+            android:label="重置密码"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.dolph.twilioapp.activity.call.CallActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.dolph.twilioapp.activity.main.NavigationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="adjustPan" />
+
+        <service
+            android:name="com.twilio.client.TwilioClientService"
+            android:exported="false" />
+    </application>
+
+</manifest>

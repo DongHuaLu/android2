@@ -1,0 +1,51 @@
+package com.example.sensor;
+
+import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+	private SensorManager sensorManager;
+	private TextView tv;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		tv=(TextView) findViewById(R.id.tv);
+		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+		Sensor sensor = sensorManager
+				.getDefaultSensor(SensorManager.SENSOR_ORIENTATION);
+		listener=new MyListener();
+		sensorManager.registerListener(new MyListener(), sensor,
+				SensorManager.SENSOR_DELAY_UI);
+	}
+
+	private class MyListener implements SensorEventListener {
+
+		// 传感器数据变化
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			float[] values = event.values;
+			float angle = values[0];
+			tv.setText(angle + "");
+		}
+
+		// 传感器精度变化
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+		}
+
+	}
+
+	@Override
+	protected void onDestroy() {
+		sensorManager.unregisterListener(listener)
+		super.onDestroy();
+	}
+}

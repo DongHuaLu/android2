@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extracts string &apos;hello&apos; into R.string.hello" description="Extracts string &apos;hello&apos; into R.string.hello" file="/Demo/res/layout/activity_main.xml" flags="6" id="com.android.ide.eclipse.adt.refactoring.extract.string" mode="EDIT_SOURCE" proj="/Demo" rplc-all-java="false" rplc-all-xml="false" sel-end="662" sel-start="643" stamp="1377588149015" tok-esc="hello" xml-attr-name="android:text"/>
+</session>

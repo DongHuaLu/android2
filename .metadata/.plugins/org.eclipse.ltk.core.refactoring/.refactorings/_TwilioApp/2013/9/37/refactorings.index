@@ -1,0 +1,21 @@
+1378803217534	Rename resource 'activity_main.xml'
+1378804128176	Rename type 'MainActivity'
+1378804473969	Rename package 'com.dolph._twilioapp'
+1378805940567	Rename resource 'login.xml'
+1378861672370	Rename package 'http'
+1378865070701	Move compilation unit
+1378865074281	Delete element
+1378866820070	Rename package 'com.dolph._twilioapp'
+1378866824526	Rename package 'com.dolph._twilioapp.activity.login'
+1378866827968	Rename package 'com.dolph._twilioapp.activity.register'
+1378868910174	Rename type 'RgisterActivity'
+1378880520996	Rename type 'loginActivity'
+1378888547679	Rename resource 'call.png'
+1378889291144	Move compilation unit
+1378891614025	Delete elements
+1378893717043	Delete element
+1379035984869	Copy file
+1379036429866	Copy file
+1379036503229	Rename resource 'activity_register_success.xml'
+1379037140000	Rename type 'RegisterSuccessActivity'
+1379037148724	Move compilation unit

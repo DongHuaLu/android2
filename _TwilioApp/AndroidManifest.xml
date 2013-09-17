@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -52,6 +53,15 @@
             android:name="com.dolph.twilioapp.activity.password.ResetPasswordActivity"
             android:label="重置密码"
             android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.dolph.twilioapp.activity.contact.ContactActivity"
+            android:label="联系人"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.dolph.twilioapp.activity.contact.NewContactActivity"
+            android:label="保存联系人" >
         </activity>
         <activity
             android:name="com.dolph.twilioapp.activity.call.CallActivity"

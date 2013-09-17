@@ -58,7 +58,7 @@ public class RegisterActivity extends Activity {
 			Toast.makeText(this, "验证错误", 0).show();
 		} else {
 			pDialog = ProgressDialog.show(this, "请稍等", "正在向服务器请求");
-			String url = "http://10.200.0.157:82/TwilioServer01/Register?";
+			String url = "http://10.200.0.157:82/Register?";
 			RequestParams params = new RequestParams();
 			params.put("code", code);
 			params.put("user_name", username);

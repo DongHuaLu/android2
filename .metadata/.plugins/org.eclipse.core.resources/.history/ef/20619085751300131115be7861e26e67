@@ -1,0 +1,6 @@
+package com.example.aidl;
+
+interface IAlipayServiceBinder {
+	void callPay();
+
+}

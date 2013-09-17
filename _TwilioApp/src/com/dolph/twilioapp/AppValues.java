@@ -16,6 +16,19 @@ public class AppValues {
 	private static String currentPhoneNumber;
 	private static String currentPassword;
 	private static boolean logined = false;
+	private static String deviceId;
+
+	public String getDeviceId() {
+		if (deviceId == null || "".equals(deviceId)) {
+			deviceId = setting.getSettingString("deviceId", "");
+		}
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		setting.setSettingsString("deviceId", deviceId);
+		AppValues.deviceId = deviceId;
+	}
 
 	public String getCurrentPassword() {
 		if (currentPassword == null || "".equals(currentPassword)) {

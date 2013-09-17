@@ -57,7 +57,7 @@ public class ResetPasswordActivity extends Activity {
 			Toast.makeText(this, "验证错误", 0).show();
 		} else {
 			pDialog = ProgressDialog.show(this, "请稍等", "正在向服务器请求");
-			String url = "http://10.200.0.157:82/TwilioServer01/GetPassword?";
+			String url = "http://10.200.0.157:82/GetPassword?";
 			RequestParams params = new RequestParams();
 			params.put("code", code);
 			params.put("password", password1);

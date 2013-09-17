@@ -10,48 +10,59 @@ package com.dolph.twilioapp.twilio;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import com.dolph.twilioapp.AppValues;
 import com.dolph.utils.HttpUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.twilio.client.Connection;
 import com.twilio.client.Device;
 import com.twilio.client.Twilio;
-import com.twilio.client.TwilioClientService;
-import com.twilio.client.TwilioClientService.TwilioBinder;
 
 public class CallPhoneService implements Twilio.InitListener {
 	private static final String TAG = "MonkeyPhone";
 
+	private static CallPhoneService service = null;
+
 	private Device device;
 	private Connection connection;
+	private AppValues appValues;
 
-	public CallPhoneService(Context context) {
+	private CallPhoneService(Context context) {
+		appValues = new AppValues(context.getApplicationContext());
 		Twilio.initialize(context, this /* Twilio.InitListener */);
+	}
+
+	public static CallPhoneService getCallPhoneService(Context context) {
+		if (service == null) {
+			service = new CallPhoneService(context);
+		}
+		return service;
 	}
 
 	/* Twilio.InitListener method */
 	@Override
 	public void onInitialized() {
 		Log.d(TAG, "Twilio SDK is ready");
-
 		try {
-			HttpUtils.get(
-					"http://122.193.29.102:82/TwilioServer01/TwilioAuth",
-					new AsyncHttpResponseHandler() {
-						@Override
-						public void onSuccess(String content) {
-							super.onSuccess(content);
-							device = Twilio
-									.createDevice(content, null /* DeviceListener */);
-						}
+			RequestParams params = new RequestParams();
+			params.put("deviceId", appValues.getDeviceId());
+			params.put("userId", appValues.getCurrentUserId() + "");
+			HttpUtils.get("http://10.200.0.157:82/loginfilter/TwilioAuth?", params, new AsyncHttpResponseHandler() {
+				@Override
+				public void onSuccess(String content) {
+					super.onSuccess(content);
+					device = Twilio.createDevice(content, null /* DeviceListener */);
+				}
 
-						@Override
-						public void onFailure(Throwable error, String content) {
-							super.onFailure(error, content);
-						}
-					});
+				@Override
+				public void onFailure(Throwable error, String content) {
+					super.onFailure(error, content);
+				}
+			});
 
 		} catch (Exception e) {
 			e.printStackTrace();

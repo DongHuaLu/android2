@@ -1,0 +1,42 @@
+package com.example.resize;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.widget.ImageView;
+
+public class MainActivity extends Activity {
+	private ImageView iv1;
+	private ImageView iv2;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		iv1 = (ImageView) findViewById(R.id.iv1);
+		iv2 = (ImageView) findViewById(R.id.iv2);
+
+		Bitmap bm = BitmapFactory.decodeResource(getResources(),
+				R.drawable.ic_launcher);
+		iv1.setImageBitmap(bm);
+
+		Bitmap alterAble = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(),
+				bm.getConfig());
+
+		Canvas canvas = new Canvas(alterAble);
+		Paint paint = new Paint();
+		paint.setColor(Color.BLACK);
+		Matrix matrix = new Matrix();
+		matrix.setValues(new float[] { 
+				0.5f, 0, 0,
+				0, 1, 0,
+				0, 0, 1 });
+		canvas.drawBitmap(bm, matrix, paint);
+		iv2.setImageBitmap(alterAble);
+	}
+}

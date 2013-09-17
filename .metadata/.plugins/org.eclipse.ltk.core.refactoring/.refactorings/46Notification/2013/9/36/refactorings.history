@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;46Notification/src/com/example/ notification&apos; to &apos;notification&apos;" description="Rename resource &apos; notification&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/com/example/ notification" name="notification" stamp="1378277386364" updateReferences="true"/>
+</session>

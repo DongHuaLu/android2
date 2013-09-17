@@ -1,0 +1,291 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="click1"
+            android:text="透明度" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="click2"
+            android:text="缩放" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="click3"
+            android:text="旋转" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="click4"
+            android:text="位移" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="click5"
+            android:text="组合" />
+    </LinearLayout>
+
+   <RelativeLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+
+        <ImageView
+            android:id="@+id/ImageView01"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imageView1"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView02"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="52dp"
+            android:layout_toRightOf="@+id/imageView1"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView03"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="55dp"
+            android:layout_toRightOf="@+id/ImageView01"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView04"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="31dp"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView05"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/ImageView01"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView06"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView02"
+            android:layout_toRightOf="@+id/imageView1"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView07"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignTop="@+id/ImageView05"
+            android:layout_toRightOf="@+id/ImageView06"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView08"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignTop="@+id/ImageView07"
+            android:layout_toLeftOf="@+id/ImageView04"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView09"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView03"
+            android:layout_toRightOf="@+id/ImageView03"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView10"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/ImageView06"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView11"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView07"
+            android:layout_toLeftOf="@+id/ImageView03"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView12"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView06"
+            android:layout_toLeftOf="@+id/ImageView08"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView13"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView09"
+            android:layout_toLeftOf="@+id/ImageView04"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView14"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignTop="@+id/ImageView12"
+            android:layout_toRightOf="@+id/ImageView03"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView16"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView14"
+            android:layout_toLeftOf="@+id/ImageView04"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView15"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView13"
+            android:layout_toRightOf="@+id/ImageView03"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView17"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/ImageView02"
+            android:layout_alignTop="@+id/ImageView16"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView18"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView12"
+            android:layout_toLeftOf="@+id/ImageView12"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView19"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView11"
+            android:layout_toLeftOf="@+id/ImageView11"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView20"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/ImageView18"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView21"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView17"
+            android:layout_toLeftOf="@+id/ImageView12"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView22"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/ImageView02"
+            android:layout_alignTop="@+id/ImageView20"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView23"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/ImageView03"
+            android:layout_below="@+id/ImageView15"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView24"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/ImageView04"
+            android:layout_below="@+id/ImageView16"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView25"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView21"
+            android:layout_toLeftOf="@+id/ImageView11"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView26"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/ImageView18"
+            android:layout_below="@+id/ImageView22"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView27"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView21"
+            android:layout_toRightOf="@+id/ImageView21"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView28"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ImageView24"
+            android:layout_toLeftOf="@+id/ImageView24"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ImageView29"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/ImageView04"
+            android:layout_alignTop="@+id/ImageView27"
+            android:src="@drawable/ic_launcher" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -62,8 +62,7 @@ public class CallActivity extends FragmentActivity {
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			twilioService = new CallPhoneService(getActivity()
-					.getApplicationContext());
+			twilioService = CallPhoneService.getCallPhoneService(getActivity().getApplicationContext());
 			Bundle bundle = getArguments();
 			number = bundle.getString("number");
 			isActivity = bundle.getBoolean("isActivity");
@@ -71,17 +70,14 @@ public class CallActivity extends FragmentActivity {
 		}
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View view = inflater.inflate(R.layout.fragment_call, container,
-					false);
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View view = inflater.inflate(R.layout.fragment_call, container, false);
 			screenEditText = (EditText) view.findViewById(R.id.tvScreen);
 			screenEditText.setInputType(InputType.TYPE_NULL);
 			if (number != null) {
 				setScreen(number);
 			}
-			final ToneGenerator tonePlayer = new ToneGenerator(
-					AudioManager.STREAM_MUSIC, 70);
+			final ToneGenerator tonePlayer = new ToneGenerator(AudioManager.STREAM_MUSIC, 70);
 			Button m0Button = (Button) view.findViewById(R.id.button0);
 			m0Button.setOnClickListener(new View.OnClickListener() {
 
@@ -216,49 +212,33 @@ public class CallActivity extends FragmentActivity {
 				@Override
 				public void onClick(View v) {
 					number = screenEditText.getText().toString();
-					if (number.startsWith("+1")) {
-						number = number.substring(2);
-					}
 					// if (Utils.validatePhone(number)) {
 					if (true) {
 						try {
 							twilioService.connect(number);
-							new AlertDialog.Builder(getActivity())
-									.setTitle("拨打中")
-									.setNegativeButton("挂断",
-											new OnClickListener() {
+							new AlertDialog.Builder(getActivity()).setTitle("拨打中").setMessage("正在拨打" + number).setNegativeButton("挂断", new OnClickListener() {
 
-												@Override
-												public void onClick(
-														DialogInterface dialog,
-														int which) {
-													twilioService.disconnect();
-												}
-											}).create().show();
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									twilioService.disconnect();
+								}
+							}).create().show();
 						} catch (Exception e) {
-							new AlertDialog.Builder(getActivity())
-									.setTitle("拨打失败")
-									.setNegativeButton("确定",
-											new OnClickListener() {
+							new AlertDialog.Builder(getActivity()).setTitle("拨打失败").setNegativeButton("确定", new OnClickListener() {
 
-												@Override
-												public void onClick(
-														DialogInterface dialog,
-														int which) {
-												}
-											}).create().show();
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+								}
+							}).create().show();
 							e.printStackTrace();
 						}
 					} else {
-						Toast.makeText(getActivity(),
-								"Please enter a valid phone number",
-								Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
 					}
 
 				}
 			});
-			Button backSpaceButton = (Button) view
-					.findViewById(R.id.btBackspace);
+			Button backSpaceButton = (Button) view.findViewById(R.id.btBackspace);
 			backSpaceButton.setOnClickListener(new View.OnClickListener() {
 
 				@Override
@@ -272,36 +252,30 @@ public class CallActivity extends FragmentActivity {
 
 				}
 			});
-			backSpaceButton
-					.setOnLongClickListener(new View.OnLongClickListener() {
+			backSpaceButton.setOnLongClickListener(new View.OnLongClickListener() {
 
-						@Override
-						public boolean onLongClick(View v) {
-							screenEditText.setText("");
-							return true;
-						}
-					});
+				@Override
+				public boolean onLongClick(View v) {
+					screenEditText.setText("");
+					return true;
+				}
+			});
 
-			Button addCotactButton = (Button) view
-					.findViewById(R.id.btAddContact);
+			Button addCotactButton = (Button) view.findViewById(R.id.btAddContact);
 
 			/************************* 保存联系人 *******************************/
 			addCotactButton.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					if (screenEditText.getText().toString().trim() != null
-							&& !"".equals(screenEditText.getText().toString()
-									.trim())) {
+					if (screenEditText.getText().toString().trim() != null && !"".equals(screenEditText.getText().toString().trim())) {
 						AlertDialog.Builder builder = new Builder(getActivity());
 						LinearLayout ll = new LinearLayout(getActivity());
 						ll.setOrientation(LinearLayout.VERTICAL);
-						final EditText editTextContactName = new EditText(
-								getActivity().getApplicationContext());
-						final EditText editTextContactAddress = new EditText(
-								getActivity().getApplicationContext());
-						editTextContactName.setTextColor(Color.BLACK);
-						editTextContactAddress.setTextColor(Color.BLACK);
+						final EditText editTextContactName = new EditText(getActivity().getApplicationContext());
+						final EditText editTextContactAddress = new EditText(getActivity().getApplicationContext());
+						editTextContactName.setTextColor(Color.WHITE);
+						editTextContactAddress.setTextColor(Color.WHITE);
 						editTextContactName.setHint("请输入联系人名称");
 						editTextContactAddress.setHint("联系人地址");
 						ll.addView(editTextContactName);
@@ -312,90 +286,59 @@ public class CallActivity extends FragmentActivity {
 						builder.setPositiveButton("保存", new OnClickListener() {
 
 							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								pDialog = ProgressDialog.show(getActivity(),
-										"保存联系人", "正在保存...");
+							public void onClick(DialogInterface dialog, int which) {
+								pDialog = ProgressDialog.show(getActivity(), "保存联系人", "正在保存...");
 								RequestParams params = new RequestParams();
-								params.put("userId",
-										appValues.getCurrentUserId() + "");
-								params.put("contactName", editTextContactName
-										.getText().toString().trim());
-								params.put("contactNumber", screenEditText
-										.getText().toString().trim());
-								params.put("address", editTextContactAddress
-										.getText().toString().trim());
-								HttpUtils
-										.get("http://10.200.0.157:8080/TwilioServer01/AddContact?",
-												params,
-												new AsyncHttpResponseHandler() {
+								params.put("userId", appValues.getCurrentUserId() + "");
+								params.put("contactName", editTextContactName.getText().toString().trim());
+								params.put("contactNumber", screenEditText.getText().toString().trim());
+								params.put("address", editTextContactAddress.getText().toString().trim());
+								params.put("deviceId", appValues.getDeviceId());
+								HttpUtils.get("http://10.200.0.157:82/loginfilter/AddContact?", params, new AsyncHttpResponseHandler() {
+
+									@Override
+									public void onSuccess(String content) {
+										super.onSuccess(content);
+										pDialog.dismiss();
+										JSONTokener jsonParser = new JSONTokener(content);
+										JSONObject json;
+										try {
+											json = (JSONObject) jsonParser.nextValue();
+											String state = json.getString("state");
+											if ("sessionerr".equals(state)) {
+												AlertDialog.Builder builder = new Builder(getActivity());
+												builder.setTitle("提示");
+												builder.setMessage(json.getString("response"));
+												builder.setPositiveButton("确定", new OnClickListener() {
 
 													@Override
-													public void onSuccess(
-															String content) {
-														super.onSuccess(content);
-														pDialog.dismiss();
-														JSONTokener jsonParser = new JSONTokener(
-																content);
-														JSONObject json;
-														try {
-															json = (JSONObject) jsonParser
-																	.nextValue();
-															String state = json
-																	.getString("state");
-															if ("err"
-																	.equals(state)) {
-																AlertDialog.Builder builder = new Builder(
-																		getActivity());
-																builder.setTitle("提示");
-																builder.setMessage(json
-																		.getString("response"));
-																builder.setPositiveButton(
-																		"确定",
-																		new OnClickListener() {
-
-																			@Override
-																			public void onClick(
-																					DialogInterface dialog,
-																					int which) {
-																			}
-																		});
-																builder.show();
-															} else if ("ok"
-																	.equals(state)) {
-																Toast.makeText(
-																		getActivity(),
-																		json.getString("response"),
-																		0)
-																		.show();
-															}
-														} catch (JSONException e) {
-															e.printStackTrace();
-														}
+													public void onClick(DialogInterface dialog, int which) {
 													}
-
-													@Override
-													protected void sendFailureMessage(
-															Throwable e,
-															String responseBody) {
-														super.sendFailureMessage(
-																e, responseBody);
-														pDialog.dismiss();
-														Toast.makeText(
-																getActivity(),
-																"网络错误", 0)
-																.show();
-													}
-
 												});
+												builder.show();
+											} else if ("ok".equals(state)) {
+												Toast.makeText(getActivity(), json.getString("response"), 0).show();
+											}
+										} catch (JSONException e) {
+											e.printStackTrace();
+										}
+									}
+
+									@Override
+									protected void sendFailureMessage(Throwable e, String responseBody) {
+										super.sendFailureMessage(e, responseBody);
+										pDialog.dismiss();
+										Toast.makeText(getActivity(), "网络错误", 0).show();
+									}
+
+								});
 
 							}
 						});
 						builder.setNegativeButton("取消", new OnClickListener() {
 
 							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
+							public void onClick(DialogInterface dialog, int which) {
 
 							}
 						});
@@ -410,8 +353,7 @@ public class CallActivity extends FragmentActivity {
 		}
 
 		protected void setScreen(String num) {
-			screenEditText.getText().insert(screenEditText.getSelectionStart(),
-					num);
+			screenEditText.getText().insert(screenEditText.getSelectionStart(), num);
 		}
 
 	}
