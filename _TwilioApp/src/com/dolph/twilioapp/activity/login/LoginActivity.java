@@ -19,6 +19,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -40,6 +41,12 @@ public class LoginActivity extends Activity {
 
 	private ProgressDialog pDialog;
 
+	private CheckBox autoLogin;
+	private CheckBox rememberMe;
+	private EditText usernameEdit;
+	private EditText passwordEdit;
+	private EditText server;
+
 	private AppValues appValues;
 
 	@Override
@@ -47,7 +54,19 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		appValues = new AppValues(this);
-		if (appValues.isLogined()) {
+		autoLogin = (CheckBox) findViewById(R.id.autoLogin);
+		rememberMe = (CheckBox) findViewById(R.id.rememberMe);
+		usernameEdit = (EditText) findViewById(R.id.editTextUser);
+		passwordEdit = (EditText) findViewById(R.id.editTextPassword);
+		server = (EditText) findViewById(R.id.editServer);
+		if (appValues.isRememberMe()) {
+			rememberMe.setChecked(true);
+			usernameEdit.setText(appValues.getCurrentUserName());
+			passwordEdit.setText(appValues.getCurrentPassword());
+			server.setText(appValues.getServerPath());
+		}
+		if (appValues.isAutoLogin()) {
+			autoLogin.setChecked(true);
 			autoLogin(appValues.getCurrentUserName(), appValues.getCurrentPassword());
 		}
 	}
@@ -68,8 +87,6 @@ public class LoginActivity extends Activity {
 	}
 
 	public void login(View view) {
-		EditText usernameEdit = (EditText) findViewById(R.id.editTextUser);
-		EditText passwordEdit = (EditText) findViewById(R.id.editTextPassword);
 		switch (checkData(usernameEdit.getText().toString().trim(), passwordEdit.getText().toString().trim())) {
 		case USERNAME_CANNOT_EMPTY:
 			Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
@@ -78,6 +95,13 @@ public class LoginActivity extends Activity {
 			Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
 			break;
 		case CORRECT_INPUT:
+			String serverPath = server.getText().toString().trim();
+			if (serverPath == null || "".equals(serverPath)) {
+				serverPath = "http://10.200.0.157:82";
+			}
+			appValues.setRememberMe(rememberMe.isChecked());
+			appValues.setAutoLogin(autoLogin.isChecked());
+			appValues.setServerPath(serverPath);
 			TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 			String id = tm.getDeviceId();
 			associate(usernameEdit.getText().toString().trim(), passwordEdit.getText().toString().trim(), id);
@@ -88,7 +112,7 @@ public class LoginActivity extends Activity {
 
 	private void autoAssociate(String username, String password, String id) {
 		pDialog = ProgressDialog.show(this, "请稍等", "正在自动登录");
-		String url = "http://10.200.0.157:82/Login?";
+		String url = appValues.getServerPath() + "/Login?";
 		RequestParams params = new RequestParams();
 		params.put("username", username);
 		params.put("password", password);
@@ -137,7 +161,7 @@ public class LoginActivity extends Activity {
 
 	private void associate(String username, String password, String id) {
 		pDialog = ProgressDialog.show(this, "请稍等", "正在向服务器请求");
-		String url = "http://10.200.0.157:82/Login?";
+		String url = appValues.getServerPath() + "/Login?";
 		RequestParams params = new RequestParams();
 		params.put("username", username);
 		params.put("password", password);

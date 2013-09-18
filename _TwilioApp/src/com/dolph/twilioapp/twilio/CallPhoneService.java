@@ -56,7 +56,7 @@ public class CallPhoneService implements Twilio.InitListener {
 			RequestParams params = new RequestParams();
 			params.put("deviceId", appValues.getDeviceId());
 			params.put("userId", appValues.getCurrentUserId() + "");
-			HttpUtils.get("http://10.200.0.157:82/loginfilter/TwilioAuth?", params, new AsyncHttpResponseHandler() {
+			HttpUtils.get(appValues.getServerPath() + "/loginfilter/TwilioAuth?", params, new AsyncHttpResponseHandler() {
 				@Override
 				public void onSuccess(String content) {
 					super.onSuccess(content);
@@ -129,7 +129,7 @@ public class CallPhoneService implements Twilio.InitListener {
 			params.put("phoneNumber", callNumber);
 			params.put("userId", appValues.getCurrentUserId() + "");
 			params.put("deviceId", appValues.getDeviceId());
-			HttpUtils.get("http://10.200.0.157:82/loginfilter/AddRecord", params, new AsyncHttpResponseHandler());
+			HttpUtils.get(appValues.getServerPath() + "/loginfilter/AddRecord", params, new AsyncHttpResponseHandler());
 		}
 
 		@Override

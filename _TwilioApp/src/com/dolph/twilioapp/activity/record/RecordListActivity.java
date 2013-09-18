@@ -92,7 +92,7 @@ public class RecordListActivity extends FragmentActivity {
 			params.put("deviceId", appValues.getDeviceId());
 			linearLoading.setVisibility(View.VISIBLE);
 			llRecordContent.setVisibility(View.GONE);
-			HttpUtils.get("http://10.200.0.157:82/loginfilter/RecordList?", params, new AsyncHttpResponseHandler() {
+			HttpUtils.get(appValues.getServerPath()+"/loginfilter/RecordList?", params, new AsyncHttpResponseHandler() {
 
 				@Override
 				public void onSuccess(String content) {
@@ -142,7 +142,7 @@ public class RecordListActivity extends FragmentActivity {
 											params.put("deviceId", appValues.getDeviceId());
 											params.put("recordId", deleteRecord.getId() + "");
 											pDialog = ProgressDialog.show(getActivity(), "删除", "正在删除...");
-											HttpUtils.get("http://10.200.0.157:82/loginfilter/DeleteRecord?", params, new AsyncHttpResponseHandler() {
+											HttpUtils.get(appValues.getServerPath()+"/loginfilter/DeleteRecord?", params, new AsyncHttpResponseHandler() {
 
 												@Override
 												public void onSuccess(String content) {

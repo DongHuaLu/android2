@@ -17,6 +17,21 @@ public class AppValues {
 	private static String currentPassword;
 	private static boolean logined = false;
 	private static String deviceId;
+	private static String serverPath;
+	private static boolean rememberMe;
+	private static boolean autoLogin;
+
+	public String getServerPath() {
+		if (serverPath == null || "".equals(serverPath)) {
+			serverPath = setting.getSettingString("serverPath", "");
+		}
+		return serverPath;
+	}
+
+	public void setServerPath(String deviceId) {
+		setting.setSettingsString("serverPath", deviceId);
+		AppValues.serverPath = deviceId;
+	}
 
 	public String getDeviceId() {
 		if (deviceId == null || "".equals(deviceId)) {
@@ -84,6 +99,24 @@ public class AppValues {
 
 	public void setLogined(boolean logined) {
 		setting.setSettingsBoolean("logined", logined);
+	}
+
+	public boolean isRememberMe() {
+		rememberMe = setting.getSettingBoolean("rememberMe", false);
+		return rememberMe;
+	}
+
+	public void setRememberMe(boolean rememberMe) {
+		setting.setSettingsBoolean("rememberMe", rememberMe);
+	}
+
+	public boolean isAutoLogin() {
+		autoLogin = setting.getSettingBoolean("autoLogin", false);
+		return autoLogin;
+	}
+
+	public void setAutoLogin(boolean autoLogin) {
+		setting.setSettingsBoolean("autoLogin", autoLogin);
 	}
 
 }

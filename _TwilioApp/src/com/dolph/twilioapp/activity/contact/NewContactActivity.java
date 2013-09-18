@@ -62,7 +62,7 @@ public class NewContactActivity extends Activity {
 		params.put("address", newContactAddress.getText().toString());
 		params.put("userId", appValues.getCurrentUserId() + "");
 		params.put("deviceId", appValues.getDeviceId() + "");
-		HttpUtils.get("http://10.200.0.157:82/loginfilter/AddContact?", params, new AsyncHttpResponseHandler() {
+		HttpUtils.get(appValues.getServerPath()+"/loginfilter/AddContact?", params, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(String content) {

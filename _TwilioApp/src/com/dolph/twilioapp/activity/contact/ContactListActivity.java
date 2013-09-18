@@ -107,7 +107,7 @@ public class ContactListActivity extends FragmentActivity {
 			params.put("sSearch", sSearch);
 			linearLoading.setVisibility(View.VISIBLE);
 			llContent.setVisibility(View.GONE);
-			HttpUtils.get("http://10.200.0.157:82/loginfilter/ContactList?", params, new AsyncHttpResponseHandler() {
+			HttpUtils.get(appValues.getServerPath()+"/loginfilter/ContactList?", params, new AsyncHttpResponseHandler() {
 
 				@Override
 				public void onSuccess(String content) {

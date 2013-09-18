@@ -97,7 +97,7 @@ public class ContactActivity extends Activity {
 		params.put("deviceId", appValues.getDeviceId());
 		params.put("contactId", contact.getId() + "");
 
-		HttpUtils.get("http://10.200.0.157:82/loginfilter/DeleteContact?", params, new AsyncHttpResponseHandler() {
+		HttpUtils.get(appValues.getServerPath()+"/loginfilter/DeleteContact?", params, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(String content) {
