@@ -8,15 +8,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/title_bar" >
+        android:background="#22888888" >
 
         <TextView
-            android:id="@+id/tvDC"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:ellipsize="middle"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:maxLines="1"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
@@ -60,20 +59,30 @@
             android:dividerHeight="0.5dp"
             android:drawSelectorOnTop="false" >
         </ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contactNoData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/common_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <TextView
-            android:id="@id/android:empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="no_data" />
+            android:text="no data"
+            android:textColor="#000000"
+            android:textSize="24sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLoading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/common_bg"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible" >

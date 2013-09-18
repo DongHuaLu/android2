@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,8 +54,10 @@ public class ContactListActivity extends FragmentActivity {
 
 	public static class ContactListFragment extends Fragment implements RefreshListener {
 
+		private static final int REFRESH_VIEW = 1;
 		private LinearLayout llContent;
 		private LinearLayout linearLoading;
+		private LinearLayout noData;
 		private TextView mTitle;
 		private EditText etSearch;
 		private AppValues appValues;
@@ -76,9 +77,9 @@ public class ContactListActivity extends FragmentActivity {
 
 			View view = inflater.inflate(R.layout.fragment_contact, container, false);
 			llContent = (LinearLayout) view.findViewById(R.id.llContent);
-			mTitle = (TextView) view.findViewById(R.id.tvDC);
 			contactList = (ListView) view.findViewById(R.id.contactList);
 			linearLoading = (LinearLayout) view.findViewById(R.id.linearLoading);
+			noData = (LinearLayout) view.findViewById(R.id.contactNoData);
 
 			pDialog = ProgressDialog.show(getActivity(), "获取联系人", "正在获取数据...");
 			getContact(appValues.getCurrentUserId(), null);
@@ -132,9 +133,14 @@ public class ContactListActivity extends FragmentActivity {
 							Gson gson = new Gson();
 							contacts = gson.fromJson(json.getString("response"), new TypeToken<List<Contact>>() {
 							}.getType());
-							contactList.setAdapter(new ContactAdapter());
-							linearLoading.setVisibility(View.GONE);
-							llContent.setVisibility(View.VISIBLE);
+							if (contacts != null && contacts.size() > 0) {
+								contactList.setAdapter(new ContactAdapter());
+								linearLoading.setVisibility(View.GONE);
+								llContent.setVisibility(View.VISIBLE);
+							} else {
+								linearLoading.setVisibility(View.GONE);
+								noData.setVisibility(View.VISIBLE);
+							}
 							contactList.setOnItemClickListener(new OnItemClickListener() {
 
 								@Override
@@ -142,7 +148,7 @@ public class ContactListActivity extends FragmentActivity {
 									Contact contact = contacts.get(position);
 									Intent contactIntent = new Intent(getActivity(), ContactActivity.class);
 									contactIntent.putExtra("contact", contact);
-									startActivity(contactIntent);
+									startActivityForResult(contactIntent, 0);
 								}
 							});
 						}
@@ -159,6 +165,14 @@ public class ContactListActivity extends FragmentActivity {
 				}
 			});
 
+		}
+
+		@Override
+		public void onActivityResult(int requestCode, int resultCode, Intent data) {
+			super.onActivityResult(requestCode, resultCode, data);
+			if (resultCode == REFRESH_VIEW) {
+				getContact(appValues.getCurrentUserId(), null);
+			}
 		}
 
 		private class ContactAdapter extends BaseAdapter {
@@ -199,7 +213,7 @@ public class ContactListActivity extends FragmentActivity {
 
 		@Override
 		public void forceRefreshView() {
-
+			getContact(appValues.getCurrentUserId(), null);
 		}
 
 	}

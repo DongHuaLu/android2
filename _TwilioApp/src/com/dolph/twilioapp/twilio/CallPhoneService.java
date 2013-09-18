@@ -7,10 +7,12 @@ package com.dolph.twilioapp.twilio;
  *  the Twilio Terms of Service located at http://www.twilio.com/legal/tos
  */
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -19,6 +21,7 @@ import com.dolph.utils.HttpUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.twilio.client.Connection;
+import com.twilio.client.ConnectionListener;
 import com.twilio.client.Device;
 import com.twilio.client.Twilio;
 
@@ -30,6 +33,8 @@ public class CallPhoneService implements Twilio.InitListener {
 	private Device device;
 	private Connection connection;
 	private AppValues appValues;
+	private String callNumber;
+	private Date startDate;
 
 	private CallPhoneService(Context context) {
 		appValues = new AppValues(context.getApplicationContext());
@@ -78,7 +83,9 @@ public class CallPhoneService implements Twilio.InitListener {
 	public void connect(String phoneNumber) {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("PhoneNumber", phoneNumber);
+		callNumber = phoneNumber;
 		connection = device.connect(parameters, null /* ConnectionListener */);
+		connection.setConnectionListener(new TwilioConnectionListener());
 		if (connection == null)
 			Log.w(TAG, "Failed to create new connection");
 	}
@@ -96,5 +103,39 @@ public class CallPhoneService implements Twilio.InitListener {
 			connection.disconnect();
 			connection = null;
 		}
+	}
+
+	public class TwilioConnectionListener implements ConnectionListener {
+
+		@Override
+		public void onConnected(Connection inConnection) {
+
+		}
+
+		@Override
+		public void onConnecting(Connection inConnection) {
+			startDate = new Date();
+		}
+
+		@Override
+		public void onDisconnected(Connection inConnection) {
+			Date endDate = new Date();
+			long duration = endDate.getTime() - startDate.getTime();
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String startTime = df.format(startDate);
+			RequestParams params = new RequestParams();
+			params.put("startTime", startTime);
+			params.put("duration", duration + "");
+			params.put("phoneNumber", callNumber);
+			params.put("userId", appValues.getCurrentUserId() + "");
+			params.put("deviceId", appValues.getDeviceId());
+			HttpUtils.get("http://10.200.0.157:82/loginfilter/AddRecord", params, new AsyncHttpResponseHandler());
+		}
+
+		@Override
+		public void onDisconnected(Connection inConnection, int inErrorCode, String inErrorMessage) {
+
+		}
+
 	}
 }

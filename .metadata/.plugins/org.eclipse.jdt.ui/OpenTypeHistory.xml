@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
 <typeInfo handle="=_TwilioApp/E:\/ad\/adt-bundle-windows-x86-20130729\/sdk\/platforms\/android-16\/android.jar&lt;android.app(Activity.class[Activity" modifiers="33" timestamp="1376664074023"/>
+<typeInfo handle="=_TwilioApp/E:\/ad\/adt-bundle-windows-x86-20130729\/sdk\/platforms\/android-16\/android.jar&lt;java.lang(Exception.class[Exception" modifiers="33" timestamp="1376664074023"/>
+<typeInfo handle="=_TwilioApp/D:\/android2\/_TwilioApp\/libs\/twilioclient-android-1.1.2-3635733.jar&lt;com.twilio.client(ConnectionListener.class[ConnectionListener" modifiers="1537" timestamp="1363911988000"/>
 </typeInfoHistroy>

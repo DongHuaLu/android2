@@ -1,0 +1,28 @@
+package com.dolph.twilioapp.twilio;
+
+import com.twilio.client.Connection;
+import com.twilio.client.ConnectionListener;
+
+public class TwilioConnectionListener implements ConnectionListener {
+
+	@Override
+	public void onConnected(Connection arg0) {
+		
+	}
+
+	@Override
+	public void onConnecting(Connection arg0) {
+		
+	}
+
+	@Override
+	public void onDisconnected(Connection arg0) {
+		
+	}
+
+	@Override
+	public void onDisconnected(Connection arg0, int arg1, String arg2) {
+		
+	}
+
+}

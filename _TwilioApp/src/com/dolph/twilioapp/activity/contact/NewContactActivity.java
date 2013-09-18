@@ -96,13 +96,19 @@ public class NewContactActivity extends Activity {
 						});
 						builder.show();
 					} else if ("ok".equals(state)) {
-						new AlertDialog.Builder(NewContactActivity.this).setTitle("成功").setMessage(json.getString("response")).create().show();
-						Intent data = new Intent();
-						data.putExtra("contactName", newContactName.getText().toString());
-						data.putExtra("contactNumber", newContactNumber.getText().toString());
-						data.putExtra("address", newContactAddress.getText().toString());
-						setResult(UPDATE_SUCCESS, data);
-						finish();
+						new AlertDialog.Builder(NewContactActivity.this).setTitle("成功").setMessage(json.getString("response")).setPositiveButton("确定", new OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								Intent data = new Intent();
+								data.putExtra("contactName", newContactName.getText().toString());
+								data.putExtra("contactNumber", newContactNumber.getText().toString());
+								data.putExtra("address", newContactAddress.getText().toString());
+								setResult(UPDATE_SUCCESS, data);
+								finish();
+							}
+						}).create().show();
+
 					}
 
 				} catch (JSONException e) {

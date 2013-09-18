@@ -22,6 +22,7 @@ import com.dolph.twilioapp.R;
 import com.dolph.twilioapp.activity.call.CallActivity;
 import com.dolph.twilioapp.activity.contact.ContactListActivity;
 import com.dolph.twilioapp.activity.contact.NewContactActivity;
+import com.dolph.twilioapp.activity.record.RecordListActivity;
 
 public class NavigationActivity extends FragmentActivity {
 
@@ -208,10 +209,9 @@ public class NavigationActivity extends FragmentActivity {
 				ft.add(R.id.fContacts, fContacts);
 			} else {
 				ft.show(fContacts);
-				if (lastFragment == fContacts) {
-					RefreshListener f = (RefreshListener) lastFragment;
-					f.refreshView();
-				}
+				RefreshListener f = (RefreshListener) fContacts;
+				f.refreshView();
+
 			}
 			ft.commit();
 			lastFragment = fContacts;
@@ -232,6 +232,45 @@ public class NavigationActivity extends FragmentActivity {
 			recordLinearLayout.setBackgroundDrawable(null);
 			break;
 
+		case RECORD_FRAGMENT:
+			if (fCall != null) {
+				ft.hide(fCall);
+			}
+			if (fContacts != null) {
+				ft.hide(fContacts);
+			}
+			if (fPay != null) {
+				ft.hide(fPay);
+			}
+			if (fMore != null) {
+				ft.hide(fMore);
+			}
+			if (fRecord == null) {
+				fRecord = Fragment.instantiate(this, RecordListActivity.RecordListFragment.class.getName());
+				ft.add(R.id.fRecord, fRecord);
+			} else {
+				ft.show(fRecord);
+				RefreshListener f = (RefreshListener) fRecord;
+				f.refreshView();
+			}
+			ft.commit();
+			lastFragment = fRecord;
+			recordFrameLayout.setVisibility(View.VISIBLE);
+			callFrameLayout.setVisibility(View.GONE);
+			contactFrameLayout.setVisibility(View.GONE);
+			payFrameLayout.setVisibility(View.GONE);
+			moreFrameLayout.setVisibility(View.GONE);
+			btRecord.setBackgroundColor(Color.GREEN);
+			btCall.setBackgroundColor(Color.BLACK);
+			btContacts.setBackgroundColor(Color.BLACK);
+			btPay.setBackgroundColor(Color.BLACK);
+			btMore.setBackgroundColor(Color.BLACK);
+			recordLinearLayout.setBackgroundResource(R.drawable.footer_menu_bg_select);
+			contactLinearLayout.setBackgroundDrawable(null);
+			payLinearLayout.setBackgroundDrawable(null);
+			moreLinearLayout.setBackgroundDrawable(null);
+			callLinearLayout.setBackgroundDrawable(null);
+			break;
 		}
 
 	}

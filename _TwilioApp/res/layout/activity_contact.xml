@@ -103,18 +103,29 @@
         </LinearLayout>
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right" >
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="#66660000"
+            android:layout_marginRight="10dp"
+            android:background="#66000066"
             android:onClick="modifyContact"
             android:text="修改联系人"
             android:textSize="16sp" />
-    </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="#66660000"
+            android:onClick="deleteContact"
+            android:text="删除联系人"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </LinearLayout>

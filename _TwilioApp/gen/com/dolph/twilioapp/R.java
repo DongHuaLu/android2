@@ -317,7 +317,7 @@ public final class R {
         public static final int ContactAddress=0x7f090002;
         public static final int ContactName=0x7f090000;
         public static final int ContactNumber=0x7f090001;
-        public static final int action_settings=0x7f090045;
+        public static final int action_settings=0x7f09004c;
         public static final int btAddContact=0x7f090035;
         public static final int btBackspace=0x7f090036;
         public static final int btCall=0x7f090015;
@@ -342,7 +342,8 @@ public final class R {
         public static final int button_yes=0x7f09003f;
         public static final int buttonn=0x7f090034;
         public static final int buttonx=0x7f090032;
-        public static final int contactList=0x7f09003a;
+        public static final int contactList=0x7f090039;
+        public static final int contactNoData=0x7f09003a;
         public static final int editTextPassword=0x7f090007;
         public static final int editTextPhone=0x7f090004;
         public static final int editTextPhoneForget=0x7f090003;
@@ -363,11 +364,18 @@ public final class R {
         public static final int ivprefer_logo=0x7f09000e;
         public static final int linearLoading=0x7f09003b;
         public static final int linearRetry=0x7f09003d;
-        public static final int llContent=0x7f090038;
+        public static final int llContent=0x7f090037;
+        public static final int llRecordContent=0x7f090042;
         public static final int newContactAddress=0x7f09000c;
         public static final int newContactName=0x7f09000a;
         public static final int newContactNumber=0x7f09000b;
+        public static final int noData=0x7f090044;
         public static final int progressbar_loading=0x7f09003c;
+        public static final int recordDuration=0x7f09004a;
+        public static final int recordList=0x7f090043;
+        public static final int recordName=0x7f090049;
+        public static final int recordNumber=0x7f09004b;
+        public static final int recordStartTime=0x7f090048;
         public static final int registerInfo=0x7f09001e;
         public static final int resetInfo=0x7f090023;
         public static final int rlCall=0x7f090014;
@@ -378,12 +386,11 @@ public final class R {
         public static final int rlRecord=0x7f090016;
         public static final int successinfo=0x7f090027;
         public static final int textview_retry=0x7f09003e;
-        public static final int tvContactAddress=0x7f090043;
-        public static final int tvContactName=0x7f090042;
-        public static final int tvContactNumber=0x7f090044;
-        public static final int tvDC=0x7f090037;
+        public static final int tvContactAddress=0x7f090046;
+        public static final int tvContactName=0x7f090045;
+        public static final int tvContactNumber=0x7f090047;
         public static final int tvScreen=0x7f090028;
-        public static final int tvSearchHeader=0x7f090039;
+        public static final int tvSearchHeader=0x7f090038;
     }
     public static final class layout {
         public static final int activity_contact=0x7f030000;
@@ -397,7 +404,9 @@ public final class R {
         public static final int activity_success=0x7f030008;
         public static final int fragment_call=0x7f030009;
         public static final int fragment_contact=0x7f03000a;
-        public static final int list_contacts=0x7f03000b;
+        public static final int fragment_record=0x7f03000b;
+        public static final int list_contacts=0x7f03000c;
+        public static final int list_record=0x7f03000d;
     }
     public static final class menu {
         public static final int main=0x7f080000;

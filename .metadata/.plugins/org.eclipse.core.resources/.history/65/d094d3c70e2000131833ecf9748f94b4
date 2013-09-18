@@ -1,0 +1,33 @@
+package com.dolph.twilioapp.twilio;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+
+import com.dolph.twilioapp.activity.call.CallActivity;
+import com.twilio.client.Connection;
+import com.twilio.client.ConnectionListener;
+
+public class TwilioConnectionListener implements ConnectionListener {
+
+	@Override
+	public void onConnected(Connection inConnection) {
+		System.out.println("connected");
+	}
+
+	@Override
+	public void onConnecting(Connection inConnection) {
+		System.out.println("connecting");
+	}
+
+	@Override
+	public void onDisconnected(Connection inConnection) {
+		System.out.println("Disconnected");
+	}
+
+	@Override
+	public void onDisconnected(Connection inConnection, int inErrorCode, String inErrorMessage) {
+
+	}
+
+}

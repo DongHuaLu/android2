@@ -56,8 +56,7 @@
         </activity>
         <activity
             android:name="com.dolph.twilioapp.activity.contact.ContactActivity"
-            android:label="联系人"
-            android:launchMode="singleTask" >
+            android:label="联系人" >
         </activity>
         <activity
             android:name="com.dolph.twilioapp.activity.contact.NewContactActivity"

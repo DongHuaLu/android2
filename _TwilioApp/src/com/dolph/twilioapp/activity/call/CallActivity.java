@@ -31,6 +31,8 @@ import com.dolph.twilioapp.twilio.CallPhoneService;
 import com.dolph.utils.HttpUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.twilio.client.Connection;
+import com.twilio.client.ConnectionListener;
 
 public class CallActivity extends FragmentActivity {
 
@@ -55,6 +57,8 @@ public class CallActivity extends FragmentActivity {
 		private EditText screenEditText;
 		private ProgressDialog pDialog;
 		private boolean isActivity;
+		public static AlertDialog dialDialog;
+
 
 		private CallPhoneService twilioService;
 		private AppValues appValues;
@@ -216,15 +220,16 @@ public class CallActivity extends FragmentActivity {
 					if (true) {
 						try {
 							twilioService.connect(number);
-							new AlertDialog.Builder(getActivity()).setTitle("拨打中").setMessage("正在拨打" + number).setNegativeButton("挂断", new OnClickListener() {
+							dialDialog = new AlertDialog.Builder(getActivity()).setTitle("拨打中").setMessage("正在拨打" + number).setNegativeButton("挂断", new OnClickListener() {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									twilioService.disconnect();
 								}
-							}).create().show();
+							}).create();
+							dialDialog.show();
 						} catch (Exception e) {
-							new AlertDialog.Builder(getActivity()).setTitle("拨打失败").setNegativeButton("确定", new OnClickListener() {
+							new AlertDialog.Builder(getActivity()).setTitle("拨打失败,session废弃或服务器错误").setNegativeButton("确定", new OnClickListener() {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
@@ -232,10 +237,7 @@ public class CallActivity extends FragmentActivity {
 							}).create().show();
 							e.printStackTrace();
 						}
-					} else {
-						Toast.makeText(getActivity(), "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
 					}
-
 				}
 			});
 			Button backSpaceButton = (Button) view.findViewById(R.id.btBackspace);
@@ -357,4 +359,5 @@ public class CallActivity extends FragmentActivity {
 		}
 
 	}
+	
 }
