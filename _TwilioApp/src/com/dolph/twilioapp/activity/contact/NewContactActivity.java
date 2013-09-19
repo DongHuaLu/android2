@@ -26,7 +26,7 @@ import com.loopj.android.http.RequestParams;
 
 public class NewContactActivity extends Activity {
 	private static final int UPDATE_SUCCESS = 2;
-	private static final int SESSION_ERR = 3;
+	private static final int SESSION_ERR = 50;
 	private EditText newContactName;
 	private EditText newContactNumber;
 	private EditText newContactAddress;

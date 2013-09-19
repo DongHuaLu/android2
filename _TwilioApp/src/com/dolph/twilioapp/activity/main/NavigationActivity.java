@@ -31,6 +31,7 @@ public class NavigationActivity extends FragmentActivity {
 	private final int CONTACTS_FRAGMENT = 3;
 	private final int PAY_FRAGMENT = 4;
 	private final int MORE_FRAGMENT = 5;
+	private static final int SESSION_ERR = 50;
 
 	private Fragment lastFragment;
 	private Button btCall, btRecord, btContacts, btPay, btMore;
@@ -274,7 +275,14 @@ public class NavigationActivity extends FragmentActivity {
 		}
 
 	}
-	
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == SESSION_ERR) {
+			finish();
+		}
+	}
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -284,7 +292,6 @@ public class NavigationActivity extends FragmentActivity {
 
 		return super.onKeyDown(keyCode, event);
 	}
-	
 
 	private Dialog ExitDialog(Context context) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);

@@ -1,8 +1,4 @@
-.metadata/
-.metadata/*
-.settings/
-.settings/*
-*.apk
+.metadata
+*.class
 *.dex
-*.ap_
-*/bin/dexedLibs/*
+*.apk
