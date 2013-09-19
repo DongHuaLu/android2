@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
 import com.dolph.twilioapp.activity.contact.ContactActivity;
+import com.dolph.twilioapp.activity.login.LoginActivity;
 import com.dolph.twilioapp.activity.main.NavigationActivity.RefreshListener;
 import com.dolph.twilioapp.model.Record;
 import com.dolph.utils.HttpUtils;
@@ -92,7 +93,7 @@ public class RecordListActivity extends FragmentActivity {
 			params.put("deviceId", appValues.getDeviceId());
 			linearLoading.setVisibility(View.VISIBLE);
 			llRecordContent.setVisibility(View.GONE);
-			HttpUtils.get(appValues.getServerPath()+"/loginfilter/RecordList?", params, new AsyncHttpResponseHandler() {
+			HttpUtils.get(appValues.getServerPath() + "/loginfilter/RecordList?", params, new AsyncHttpResponseHandler() {
 
 				@Override
 				public void onSuccess(String content) {
@@ -111,6 +112,8 @@ public class RecordListActivity extends FragmentActivity {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
+									startActivity(new Intent(getActivity(), LoginActivity.class));
+									getActivity().finish();
 								}
 							});
 							builder.show();
@@ -142,7 +145,7 @@ public class RecordListActivity extends FragmentActivity {
 											params.put("deviceId", appValues.getDeviceId());
 											params.put("recordId", deleteRecord.getId() + "");
 											pDialog = ProgressDialog.show(getActivity(), "删除", "正在删除...");
-											HttpUtils.get(appValues.getServerPath()+"/loginfilter/DeleteRecord?", params, new AsyncHttpResponseHandler() {
+											HttpUtils.get(appValues.getServerPath() + "/loginfilter/DeleteRecord?", params, new AsyncHttpResponseHandler() {
 
 												@Override
 												public void onSuccess(String content) {
@@ -161,6 +164,8 @@ public class RecordListActivity extends FragmentActivity {
 
 																@Override
 																public void onClick(DialogInterface dialog, int which) {
+																	startActivity(new Intent(getActivity(), LoginActivity.class));
+																	getActivity().finish();
 																}
 															});
 															builder.show();

@@ -9,6 +9,7 @@ import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
+import com.dolph.twilioapp.activity.login.LoginActivity;
 import com.dolph.twilioapp.twilio.CallPhoneService;
 import com.dolph.utils.HttpUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -58,7 +60,6 @@ public class CallActivity extends FragmentActivity {
 		private ProgressDialog pDialog;
 		private boolean isActivity;
 		public static AlertDialog dialDialog;
-
 
 		private CallPhoneService twilioService;
 		private AppValues appValues;
@@ -296,7 +297,7 @@ public class CallActivity extends FragmentActivity {
 								params.put("contactNumber", screenEditText.getText().toString().trim());
 								params.put("address", editTextContactAddress.getText().toString().trim());
 								params.put("deviceId", appValues.getDeviceId());
-								HttpUtils.get(appValues.getServerPath()+"/loginfilter/AddContact?", params, new AsyncHttpResponseHandler() {
+								HttpUtils.get(appValues.getServerPath() + "/loginfilter/AddContact?", params, new AsyncHttpResponseHandler() {
 
 									@Override
 									public void onSuccess(String content) {
@@ -315,6 +316,8 @@ public class CallActivity extends FragmentActivity {
 
 													@Override
 													public void onClick(DialogInterface dialog, int which) {
+														startActivity(new Intent(getActivity(), LoginActivity.class));
+														getActivity().finish();
 													}
 												});
 												builder.show();
@@ -359,5 +362,5 @@ public class CallActivity extends FragmentActivity {
 		}
 
 	}
-	
+
 }

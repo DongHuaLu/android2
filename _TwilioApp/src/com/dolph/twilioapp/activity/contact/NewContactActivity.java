@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
+import com.dolph.twilioapp.activity.login.LoginActivity;
 import com.dolph.twilioapp.model.Contact;
 import com.dolph.utils.HttpUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -25,6 +26,7 @@ import com.loopj.android.http.RequestParams;
 
 public class NewContactActivity extends Activity {
 	private static final int UPDATE_SUCCESS = 2;
+	private static final int SESSION_ERR = 3;
 	private EditText newContactName;
 	private EditText newContactNumber;
 	private EditText newContactAddress;
@@ -81,6 +83,9 @@ public class NewContactActivity extends Activity {
 
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
+								startActivity(new Intent(NewContactActivity.this, LoginActivity.class));
+								setResult(SESSION_ERR);
+								finish();
 							}
 						});
 						builder.show();

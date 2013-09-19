@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy element &apos;StreamTools.java&apos; to &apos;18Get/src/com.example.util&apos;&#x0D;&#x0A;- Original project: &apos;17HtmlViewer&apos;&#x0D;&#x0A;- Destination element: &apos;18Get/src/com.example.util&apos;&#x0D;&#x0A;- Original element: &apos;com.example.utils.StreamTools.java&apos;" description="Copy compilation unit" destination="=18Get/src&lt;com.example.util" element1="/src&lt;com.example.utils{StreamTools.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1377500249896" units="1" version="1.0"/>
-</session>

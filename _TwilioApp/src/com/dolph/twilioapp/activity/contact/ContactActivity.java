@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
+import com.dolph.twilioapp.activity.login.LoginActivity;
 import com.dolph.twilioapp.model.Contact;
 import com.dolph.twilioapp.twilio.CallPhoneService;
 import com.dolph.utils.HttpUtils;
@@ -26,6 +27,7 @@ import com.loopj.android.http.RequestParams;
 public class ContactActivity extends Activity {
 	private static final int REFRESH_VIEW = 1;
 	private static final int UPDATE_SUCCESS = 2;
+	private static final int SESSION_ERR = 3;
 	private TextView contactName;
 	private TextView contactNumber;
 	private TextView contactAddress;
@@ -63,6 +65,9 @@ public class ContactActivity extends Activity {
 			contactName.setText(data.getStringExtra("contactName"));
 			contactNumber.setText(data.getStringExtra("contactNumber"));
 			contactAddress.setText(data.getStringExtra("address"));
+		} else if (resultCode == SESSION_ERR) {
+			setResult(SESSION_ERR);
+			finish();
 		}
 	}
 
@@ -97,7 +102,7 @@ public class ContactActivity extends Activity {
 		params.put("deviceId", appValues.getDeviceId());
 		params.put("contactId", contact.getId() + "");
 
-		HttpUtils.get(appValues.getServerPath()+"/loginfilter/DeleteContact?", params, new AsyncHttpResponseHandler() {
+		HttpUtils.get(appValues.getServerPath() + "/loginfilter/DeleteContact?", params, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(String content) {
@@ -115,6 +120,9 @@ public class ContactActivity extends Activity {
 
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
+								startActivity(new Intent(ContactActivity.this, LoginActivity.class));
+								setResult(SESSION_ERR);
+								finish();
 							}
 						});
 						builder.show();

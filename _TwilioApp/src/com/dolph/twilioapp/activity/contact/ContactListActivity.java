@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
+import com.dolph.twilioapp.activity.login.LoginActivity;
 import com.dolph.twilioapp.activity.main.NavigationActivity.RefreshListener;
 import com.dolph.twilioapp.model.Contact;
 import com.dolph.utils.HttpUtils;
@@ -55,6 +56,7 @@ public class ContactListActivity extends FragmentActivity {
 	public static class ContactListFragment extends Fragment implements RefreshListener {
 
 		private static final int REFRESH_VIEW = 1;
+		private static final int SESSION_ERR = 3;
 		private LinearLayout llContent;
 		private LinearLayout linearLoading;
 		private LinearLayout noData;
@@ -107,7 +109,7 @@ public class ContactListActivity extends FragmentActivity {
 			params.put("sSearch", sSearch);
 			linearLoading.setVisibility(View.VISIBLE);
 			llContent.setVisibility(View.GONE);
-			HttpUtils.get(appValues.getServerPath()+"/loginfilter/ContactList?", params, new AsyncHttpResponseHandler() {
+			HttpUtils.get(appValues.getServerPath() + "/loginfilter/ContactList?", params, new AsyncHttpResponseHandler() {
 
 				@Override
 				public void onSuccess(String content) {
@@ -126,6 +128,8 @@ public class ContactListActivity extends FragmentActivity {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
+									startActivity(new Intent(getActivity(), LoginActivity.class));
+									getActivity().finish();
 								}
 							});
 							builder.show();
@@ -172,6 +176,8 @@ public class ContactListActivity extends FragmentActivity {
 			super.onActivityResult(requestCode, resultCode, data);
 			if (resultCode == REFRESH_VIEW) {
 				getContact(appValues.getCurrentUserId(), null);
+			} else if (resultCode == SESSION_ERR) {
+				getActivity().finish();
 			}
 		}
 

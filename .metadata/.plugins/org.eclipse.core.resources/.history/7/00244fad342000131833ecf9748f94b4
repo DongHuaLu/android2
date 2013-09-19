@@ -1,9 +1,0 @@
-package com.dolph.twilioapp.model;
-
-public class Record {
-	private int id;
-	private String number;
-	private String name;
-	private Date startTime;
-	private int duration;
-}

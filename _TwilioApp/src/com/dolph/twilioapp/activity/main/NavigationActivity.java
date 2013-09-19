@@ -39,7 +39,7 @@ public class NavigationActivity extends FragmentActivity {
 
 	public void addContact(View view) {
 		Intent intent = new Intent(this, NewContactActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent, 0);
 	}
 
 	@Override
@@ -274,6 +274,7 @@ public class NavigationActivity extends FragmentActivity {
 		}
 
 	}
+	
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -283,6 +284,7 @@ public class NavigationActivity extends FragmentActivity {
 
 		return super.onKeyDown(keyCode, event);
 	}
+	
 
 	private Dialog ExitDialog(Context context) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);

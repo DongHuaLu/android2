@@ -9,7 +9,7 @@ public class HttpUtils {
 	private static AsyncHttpClient client = new AsyncHttpClient();
 
 	static {
-		client.setTimeout(100000);
+		client.setTimeout(15000);
 	}
 
 	public static void get(String url, AsyncHttpResponseHandler responseHandler) {

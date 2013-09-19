@@ -1,8 +1,0 @@
-package com.dolph.twilioapp.model;
-
-public class Contact {
-	private String name;
-	private String address;
-	private String number;
-
-}
