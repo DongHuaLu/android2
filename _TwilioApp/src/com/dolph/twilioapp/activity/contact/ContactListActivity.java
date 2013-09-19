@@ -55,7 +55,7 @@ public class ContactListActivity extends FragmentActivity {
 
 	public static class ContactListFragment extends Fragment implements RefreshListener {
 
-		private static final int REFRESH_VIEW = 1;
+		private static final int REFRESH_VIEW = 51;
 		private static final int SESSION_ERR = 50;
 		private LinearLayout llContent;
 		private LinearLayout linearLoading;

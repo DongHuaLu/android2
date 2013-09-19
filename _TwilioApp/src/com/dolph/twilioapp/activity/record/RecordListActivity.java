@@ -54,7 +54,7 @@ public class RecordListActivity extends FragmentActivity {
 
 	public static class RecordListFragment extends Fragment implements RefreshListener {
 
-		private static final int REFRESH_VIEW = 1;
+		private static final int REFRESH_VIEW = 51;
 		private LinearLayout llRecordContent;
 		private LinearLayout linearLoading;
 		private LinearLayout noData;

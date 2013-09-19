@@ -32,6 +32,7 @@ public class NavigationActivity extends FragmentActivity {
 	private final int PAY_FRAGMENT = 4;
 	private final int MORE_FRAGMENT = 5;
 	private static final int SESSION_ERR = 50;
+	private static final int UPDATE_SUCCESS = 52;
 
 	private Fragment lastFragment;
 	private Button btCall, btRecord, btContacts, btPay, btMore;
@@ -279,7 +280,9 @@ public class NavigationActivity extends FragmentActivity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == SESSION_ERR) {
+		if (resultCode == UPDATE_SUCCESS) {
+			btContacts.performClick();
+		} else if (resultCode == SESSION_ERR) {
 			finish();
 		}
 	}

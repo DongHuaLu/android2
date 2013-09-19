@@ -25,8 +25,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class ContactActivity extends Activity {
-	private static final int REFRESH_VIEW = 1;
-	private static final int UPDATE_SUCCESS = 2;
+	private static final int REFRESH_VIEW = 51;
+	private static final int UPDATE_SUCCESS = 52;
 	private static final int SESSION_ERR = 50;
 	private TextView contactName;
 	private TextView contactNumber;
