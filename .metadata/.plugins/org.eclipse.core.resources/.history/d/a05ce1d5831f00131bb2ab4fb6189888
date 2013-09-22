@@ -1,5 +1,0 @@
-package com.dolph.twilioapp.exception;
-
-public class SessionErrorException extends Exception {
-
-}
