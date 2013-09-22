@@ -22,6 +22,7 @@ import com.dolph.twilioapp.R;
 import com.dolph.twilioapp.activity.call.CallActivity;
 import com.dolph.twilioapp.activity.contact.ContactListActivity;
 import com.dolph.twilioapp.activity.contact.NewContactActivity;
+import com.dolph.twilioapp.activity.more.MoreActivity;
 import com.dolph.twilioapp.activity.record.RecordListActivity;
 
 public class NavigationActivity extends FragmentActivity {
@@ -273,6 +274,44 @@ public class NavigationActivity extends FragmentActivity {
 			moreLinearLayout.setBackgroundDrawable(null);
 			callLinearLayout.setBackgroundDrawable(null);
 			break;
+
+		case MORE_FRAGMENT:
+			if (fRecord != null) {
+				ft.hide(fRecord);
+			}
+			if (fContacts != null) {
+				ft.hide(fContacts);
+			}
+			if (fPay != null) {
+				ft.hide(fPay);
+			}
+			if (fCall != null) {
+				ft.hide(fCall);
+			}
+			if (fMore == null) {
+				fMore = Fragment.instantiate(this, MoreActivity.MoreFragment.class.getName());
+				ft.add(R.id.fMore, fMore);
+			} else {
+				ft.show(fMore);
+			}
+			ft.commit();
+			lastFragment = null;
+			moreFrameLayout.setVisibility(View.VISIBLE);
+			callFrameLayout.setVisibility(View.GONE);
+			recordFrameLayout.setVisibility(View.GONE);
+			contactFrameLayout.setVisibility(View.GONE);
+			payFrameLayout.setVisibility(View.GONE);
+			btMore.setBackgroundColor(Color.GREEN);
+			btCall.setBackgroundColor(Color.BLACK);
+			btContacts.setBackgroundColor(Color.BLACK);
+			btRecord.setBackgroundColor(Color.BLACK);
+			btPay.setBackgroundColor(Color.BLACK);
+			moreLinearLayout.setBackgroundResource(R.drawable.footer_menu_bg_select);
+			contactLinearLayout.setBackgroundDrawable(null);
+			payLinearLayout.setBackgroundDrawable(null);
+			callLinearLayout.setBackgroundDrawable(null);
+			recordLinearLayout.setBackgroundDrawable(null);
+			break;
 		}
 
 	}
@@ -311,4 +350,5 @@ public class NavigationActivity extends FragmentActivity {
 		});
 		return builder.create();
 	}
+	
 }

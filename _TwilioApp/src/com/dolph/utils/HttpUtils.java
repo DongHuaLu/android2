@@ -12,12 +12,15 @@ public class HttpUtils {
 		client.setTimeout(15000);
 	}
 
+	public static void setTimeout(int timeout) {
+		client.setTimeout(timeout);
+	}
+
 	public static void get(String url, AsyncHttpResponseHandler responseHandler) {
 		client.get(url, responseHandler);
 	}
 
-	public static void get(String url, RequestParams params,
-			AsyncHttpResponseHandler responseHandler) {
+	public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 		client.get(url, params, responseHandler);
 	}
 
@@ -26,8 +29,7 @@ public class HttpUtils {
 		client.get(urlString, res);
 	}
 
-	public static void get(String urlString, RequestParams params,
-			JsonHttpResponseHandler res) // 带参数，获取json对象或者数组
+	public static void get(String urlString, RequestParams params, JsonHttpResponseHandler res) // 带参数，获取json对象或者数组
 	{
 		client.get(urlString, params, res);
 	}
