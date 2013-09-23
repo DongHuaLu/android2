@@ -23,6 +23,7 @@ import com.dolph.twilioapp.activity.call.CallActivity;
 import com.dolph.twilioapp.activity.contact.ContactListActivity;
 import com.dolph.twilioapp.activity.contact.NewContactActivity;
 import com.dolph.twilioapp.activity.more.MoreActivity;
+import com.dolph.twilioapp.activity.pay.PayActivity;
 import com.dolph.twilioapp.activity.record.RecordListActivity;
 
 public class NavigationActivity extends FragmentActivity {
@@ -295,7 +296,7 @@ public class NavigationActivity extends FragmentActivity {
 				ft.show(fMore);
 			}
 			ft.commit();
-			lastFragment = null;
+			lastFragment = fMore;
 			moreFrameLayout.setVisibility(View.VISIBLE);
 			callFrameLayout.setVisibility(View.GONE);
 			recordFrameLayout.setVisibility(View.GONE);
@@ -309,6 +310,44 @@ public class NavigationActivity extends FragmentActivity {
 			moreLinearLayout.setBackgroundResource(R.drawable.footer_menu_bg_select);
 			contactLinearLayout.setBackgroundDrawable(null);
 			payLinearLayout.setBackgroundDrawable(null);
+			callLinearLayout.setBackgroundDrawable(null);
+			recordLinearLayout.setBackgroundDrawable(null);
+			break;
+
+		case PAY_FRAGMENT:
+			if (fRecord != null) {
+				ft.hide(fRecord);
+			}
+			if (fContacts != null) {
+				ft.hide(fContacts);
+			}
+			if (fMore != null) {
+				ft.hide(fMore);
+			}
+			if (fCall != null) {
+				ft.hide(fCall);
+			}
+			if (fPay == null) {
+				fPay = Fragment.instantiate(this, PayActivity.PayFragment.class.getName());
+				ft.add(R.id.fPay, fPay);
+			} else {
+				ft.show(fPay);
+			}
+			ft.commit();
+			lastFragment = fPay;
+			payFrameLayout.setVisibility(View.VISIBLE);
+			callFrameLayout.setVisibility(View.GONE);
+			recordFrameLayout.setVisibility(View.GONE);
+			contactFrameLayout.setVisibility(View.GONE);
+			moreFrameLayout.setVisibility(View.GONE);
+			btPay.setBackgroundColor(Color.GREEN);
+			btCall.setBackgroundColor(Color.BLACK);
+			btContacts.setBackgroundColor(Color.BLACK);
+			btRecord.setBackgroundColor(Color.BLACK);
+			btMore.setBackgroundColor(Color.BLACK);
+			payLinearLayout.setBackgroundResource(R.drawable.footer_menu_bg_select);
+			contactLinearLayout.setBackgroundDrawable(null);
+			moreLinearLayout.setBackgroundDrawable(null);
 			callLinearLayout.setBackgroundDrawable(null);
 			recordLinearLayout.setBackgroundDrawable(null);
 			break;
@@ -350,5 +389,5 @@ public class NavigationActivity extends FragmentActivity {
 		});
 		return builder.create();
 	}
-	
+
 }

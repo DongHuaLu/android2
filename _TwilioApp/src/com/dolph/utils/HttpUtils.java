@@ -33,4 +33,8 @@ public class HttpUtils {
 	{
 		client.get(urlString, params, res);
 	}
+
+	public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		client.post(url, params, responseHandler);
+	}
 }

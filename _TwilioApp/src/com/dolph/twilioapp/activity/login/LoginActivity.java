@@ -67,7 +67,9 @@ public class LoginActivity extends Activity {
 		}
 		if (appValues.isAutoLogin()) {
 			autoLogin.setChecked(true);
-			autoLogin(appValues.getCurrentUserName(), appValues.getCurrentPassword());
+			if (!appValues.isLogouted()) {
+				autoLogin(appValues.getCurrentUserName(), appValues.getCurrentPassword());
+			}
 		}
 	}
 
@@ -80,6 +82,7 @@ public class LoginActivity extends Activity {
 		case CORRECT_INPUT:
 			TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 			String id = tm.getDeviceId();
+			appValues.setLogouted(false);
 			autoAssociate(username, password, id);
 			break;
 		}
@@ -102,6 +105,7 @@ public class LoginActivity extends Activity {
 			appValues.setRememberMe(rememberMe.isChecked());
 			appValues.setAutoLogin(autoLogin.isChecked());
 			appValues.setServerPath(serverPath);
+			appValues.setLogouted(false);
 			TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 			String id = tm.getDeviceId();
 			associate(usernameEdit.getText().toString().trim(), passwordEdit.getText().toString().trim(), id);
@@ -140,7 +144,6 @@ public class LoginActivity extends Activity {
 						appValues.setCurrentPhoneNumber(currentMobilePhone);
 						appValues.setCurrentUserName(currentUserName);
 						appValues.setCurrentUserId(Integer.parseInt(currentUserId));
-						appValues.setLogined(true);
 						startNavigation();
 					}
 				} catch (JSONException e) {
@@ -199,7 +202,6 @@ public class LoginActivity extends Activity {
 						appValues.setCurrentUserName(currentUserName);
 						appValues.setCurrentUserId(Integer.parseInt(currentUserId));
 
-						appValues.setLogined(true);
 						startNavigation();
 					}
 				} catch (JSONException e) {

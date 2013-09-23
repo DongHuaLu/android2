@@ -57,7 +57,7 @@ public class MoreActivity extends FragmentActivity {
 					params.put("deviceId", appValues.getDeviceId());
 					params.put("userId", appValues.getCurrentUserId() + "");
 					pDialog = ProgressDialog.show(getActivity(), "登出", "正在登出...");
-					appValues.setAutoLogin(false);
+					appValues.setLogouted(true);
 					HttpUtils.setTimeout(5000);
 					HttpUtils.get(appValues.getServerPath() + "/loginfilter/Logout?", params, new AsyncHttpResponseHandler() {
 

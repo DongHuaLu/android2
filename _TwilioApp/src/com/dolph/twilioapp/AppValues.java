@@ -15,7 +15,7 @@ public class AppValues {
 	private static String currentUserName;
 	private static String currentPhoneNumber;
 	private static String currentPassword;
-	private static boolean logined = false;
+	private static boolean logouted = false;
 	private static String deviceId;
 	private static String serverPath;
 	private static boolean rememberMe;
@@ -92,13 +92,13 @@ public class AppValues {
 		AppValues.currentUserId = currentUserId;
 	}
 
-	public boolean isLogined() {
-		logined = setting.getSettingBoolean("logined", false);
-		return logined;
+	public boolean isLogouted() {
+		logouted = setting.getSettingBoolean("logouted", false);
+		return logouted;
 	}
 
-	public void setLogined(boolean logined) {
-		setting.setSettingsBoolean("logined", logined);
+	public void setLogouted(boolean logouted) {
+		setting.setSettingsBoolean("logouted", logouted);
 	}
 
 	public boolean isRememberMe() {
