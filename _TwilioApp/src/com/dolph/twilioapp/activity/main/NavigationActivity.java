@@ -25,6 +25,7 @@ import com.dolph.twilioapp.activity.contact.NewContactActivity;
 import com.dolph.twilioapp.activity.more.MoreActivity;
 import com.dolph.twilioapp.activity.pay.PayActivity;
 import com.dolph.twilioapp.activity.record.RecordListActivity;
+import com.dolph.twilioapp.twilio.CallPhoneService;
 
 public class NavigationActivity extends FragmentActivity {
 
@@ -50,6 +51,7 @@ public class NavigationActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_navigation);
+		CallPhoneService callService = CallPhoneService.getCallPhoneService(getApplicationContext());
 		btCall = (Button) findViewById(R.id.btCall);
 		btRecord = (Button) findViewById(R.id.btRecord);
 		btContacts = (Button) findViewById(R.id.btContacts);
@@ -332,6 +334,8 @@ public class NavigationActivity extends FragmentActivity {
 				ft.add(R.id.fPay, fPay);
 			} else {
 				ft.show(fPay);
+				RefreshListener f = (RefreshListener) fPay;
+				f.refreshView();
 			}
 			ft.commit();
 			lastFragment = fPay;

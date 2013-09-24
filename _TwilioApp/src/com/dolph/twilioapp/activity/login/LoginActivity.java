@@ -29,6 +29,7 @@ import com.dolph.twilioapp.activity.main.NavigationActivity;
 import com.dolph.twilioapp.activity.password.GetForgetCodeActivity;
 import com.dolph.twilioapp.activity.register.GetRegisterCodeActivity;
 import com.dolph.utils.HttpUtils;
+import com.dolph.utils.MD5;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -62,7 +63,7 @@ public class LoginActivity extends Activity {
 		if (appValues.isRememberMe()) {
 			rememberMe.setChecked(true);
 			usernameEdit.setText(appValues.getCurrentUserName());
-			passwordEdit.setText(appValues.getCurrentPassword());
+			passwordEdit.setText("");
 			server.setText(appValues.getServerPath());
 		}
 		if (appValues.isAutoLogin()) {
@@ -108,7 +109,7 @@ public class LoginActivity extends Activity {
 			appValues.setLogouted(false);
 			TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 			String id = tm.getDeviceId();
-			associate(usernameEdit.getText().toString().trim(), passwordEdit.getText().toString().trim(), id);
+			associate(usernameEdit.getText().toString().trim(), MD5.getMD5(passwordEdit.getText().toString().trim().getBytes()), id);
 			break;
 
 		}

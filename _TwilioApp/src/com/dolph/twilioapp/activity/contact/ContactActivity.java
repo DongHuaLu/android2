@@ -14,9 +14,11 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
+import com.dolph.twilioapp.activity.call.CallingActivity;
 import com.dolph.twilioapp.activity.login.LoginActivity;
 import com.dolph.twilioapp.model.Contact;
 import com.dolph.twilioapp.twilio.CallPhoneService;
@@ -32,7 +34,6 @@ public class ContactActivity extends Activity {
 	private TextView contactNumber;
 	private TextView contactAddress;
 	private Contact contact;
-	private CallPhoneService twilioService;
 	private AppValues appValues;
 
 	@Override
@@ -49,7 +50,6 @@ public class ContactActivity extends Activity {
 		contactName.setText(contact.getName());
 		contactNumber.setText(contact.getNumber());
 		contactAddress.setText(contact.getAddress());
-		twilioService = CallPhoneService.getCallPhoneService(this.getApplicationContext());
 	}
 
 	public void modifyContact(View view) {
@@ -73,27 +73,14 @@ public class ContactActivity extends Activity {
 
 	public void call(View view) {
 		String number = contactNumber.getText().toString();
-		// if (Utils.validatePhone(number)) {
-		if (true) {
-			try {
-				twilioService.connect(number);
-				new AlertDialog.Builder(this).setTitle("拨打中").setMessage("正在拨打" + number).setNegativeButton("挂断", new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						twilioService.disconnect();
-					}
-				}).create().show();
-			} catch (Exception e) {
-				new AlertDialog.Builder(this).setTitle("拨打失败").setNegativeButton("确定", new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				}).create().show();
-				e.printStackTrace();
-			}
+		if (number == null || "".equals(number.trim())) {
+			Toast.makeText(this, "号码为空", 0).show();
+		} else {
+			Intent calling = new Intent(this, CallingActivity.class);
+			calling.putExtra("number", number);
+			startActivity(calling);
 		}
+
 	}
 
 	public void deleteContact(View view) {

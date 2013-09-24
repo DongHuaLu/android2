@@ -29,11 +29,11 @@ import android.widget.Toast;
 
 import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
-import com.dolph.twilioapp.activity.contact.ContactActivity;
 import com.dolph.twilioapp.activity.login.LoginActivity;
 import com.dolph.twilioapp.activity.main.NavigationActivity.RefreshListener;
 import com.dolph.twilioapp.model.Record;
 import com.dolph.utils.HttpUtils;
+import com.dolph.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -270,32 +270,11 @@ public class RecordListActivity extends FragmentActivity {
 				recordStartTime.setText(record.getStartTime());
 				recordName.setText(record.getName());
 				recordNumber.setText(record.getNumber());
-				recordDuration.setText(durationFormat(record.getDuration()));
+				recordDuration.setText(Utils.durationFormat(record.getDuration()/1000));
 				return view;
 			}
 
-			private String durationFormat(int duration) {
-				StringBuffer sb = new StringBuffer();
-				duration /= 1000;
-				if (duration > 3600) {
-					if (duration < 36000) {
-						sb.append("0" + duration / 3600 + ":");
-					} else {
-						sb.append(duration / 3600 + ":");
-					}
-				}
-				if ((duration % 3600) < 600) {
-					sb.append("0" + (duration % 3600) / 60 + ":");
-				} else {
-					sb.append((duration % 3600) / 60 + ":");
-				}
-				if (duration % 60 < 10) {
-					sb.append("0" + duration % 60);
-				} else {
-					sb.append(duration % 60);
-				}
-				return sb.toString();
-			}
+
 		}
 
 		@Override

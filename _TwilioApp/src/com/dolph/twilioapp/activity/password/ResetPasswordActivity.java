@@ -73,6 +73,7 @@ public class ResetPasswordActivity extends Activity {
 						Intent intent = new Intent(ResetPasswordActivity.this, SuccessActivity.class);
 						intent.putExtra("info", content);
 						startActivity(intent);
+						finish();
 					} else {
 						AlertDialog.Builder builder = new Builder(ResetPasswordActivity.this);
 						builder.setTitle("提示");

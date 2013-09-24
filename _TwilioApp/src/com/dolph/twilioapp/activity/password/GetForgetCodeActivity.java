@@ -77,6 +77,7 @@ public class GetForgetCodeActivity extends Activity {
 						intent.putExtra("code", content);
 						intent.putExtra("mobile_phone", phoneNumber);
 						startActivity(intent);
+						finish();
 					}
 				}
 

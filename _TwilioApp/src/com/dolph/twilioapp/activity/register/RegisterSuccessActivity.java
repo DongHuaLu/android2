@@ -22,8 +22,15 @@ public class RegisterSuccessActivity extends Activity {
 	}
 
 	public void backToLogin(View view) {
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
+		finish();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 0) {
+			finish();
+		}
 	}
 
 }

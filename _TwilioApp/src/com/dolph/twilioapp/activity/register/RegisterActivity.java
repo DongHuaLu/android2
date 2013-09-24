@@ -17,6 +17,7 @@ import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
 import com.dolph.twilioapp.activity.main.SuccessActivity;
 import com.dolph.utils.HttpUtils;
+import com.dolph.utils.MD5;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -63,8 +64,8 @@ public class RegisterActivity extends Activity {
 			RequestParams params = new RequestParams();
 			params.put("code", code);
 			params.put("user_name", username);
-			params.put("password", password1);
-			params.put("password2", password2);
+			params.put("password", MD5.getMD5(password1.getBytes()));
+			params.put("password2", MD5.getMD5(password2.getBytes()));
 			params.put("mobile_phone", phoneNumber);
 			HttpUtils.get(url, params, new AsyncHttpResponseHandler() {
 
@@ -76,6 +77,7 @@ public class RegisterActivity extends Activity {
 						Intent intent = new Intent(RegisterActivity.this, SuccessActivity.class);
 						intent.putExtra("info", username + "注册成功");
 						startActivity(intent);
+						finish();
 					} else {
 						AlertDialog.Builder builder = new Builder(RegisterActivity.this);
 						builder.setTitle("提示");

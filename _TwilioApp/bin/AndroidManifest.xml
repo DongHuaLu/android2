@@ -75,6 +75,11 @@
             android:label="保存联系人" >
         </activity>
         <activity
+            android:name="com.dolph.twilioapp.activity.call.CallingActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
             android:name="com.dolph.twilioapp.activity.call.CallActivity"
             android:screenOrientation="portrait" />
         <activity
