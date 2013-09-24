@@ -8,3 +8,4 @@
 *.jar
 *.ap_
 *.index
+.classpath
