@@ -1,33 +1,34 @@
 package com.dolph.twilioapp.activity.password;
 
-import com.dolph.twilioapp.R;
-import com.dolph.twilioapp.activity.register.GetRegisterCodeActivity;
-import com.dolph.twilioapp.activity.register.RegisterActivity;
-import com.dolph.utils.HttpUtils;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dolph.twilioapp.AppValues;
+import com.dolph.twilioapp.R;
+import com.dolph.utils.HttpUtils;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 public class GetForgetCodeActivity extends Activity {
 	private ProgressDialog pDialog;
 	String phoneNumber;
+	private AppValues appValues; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_getforgetcode);
+		appValues=new AppValues(this.getApplicationContext());
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class GetForgetCodeActivity extends Activity {
 			Toast.makeText(this, "电话号码不能为空", 0).show();
 			return;
 		} else {
-			String url = "http://10.200.0.157:82/ForgetPasswordGetCode?"
+			String url = appValues.getServerPath()+"/ForgetPasswordGetCode?"
 					+ phoneNumber;
 			RequestParams params = new RequestParams();
 			params.put("mobile_phone", phoneNumber);
@@ -76,6 +77,7 @@ public class GetForgetCodeActivity extends Activity {
 						intent.putExtra("code", content);
 						intent.putExtra("mobile_phone", phoneNumber);
 						startActivity(intent);
+						finish();
 					}
 				}
 

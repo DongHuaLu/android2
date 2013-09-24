@@ -13,10 +13,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 
 import com.dolph.twilioapp.AppValues;
+import com.dolph.twilioapp.activity.login.LoginActivity;
 import com.dolph.utils.HttpUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -56,7 +65,7 @@ public class CallPhoneService implements Twilio.InitListener {
 			RequestParams params = new RequestParams();
 			params.put("deviceId", appValues.getDeviceId());
 			params.put("userId", appValues.getCurrentUserId() + "");
-			HttpUtils.get("http://10.200.0.157:82/loginfilter/TwilioAuth?", params, new AsyncHttpResponseHandler() {
+			HttpUtils.get(appValues.getServerPath() + "/loginfilter/TwilioAuth?", params, new AsyncHttpResponseHandler() {
 				@Override
 				public void onSuccess(String content) {
 					super.onSuccess(content);
@@ -103,6 +112,7 @@ public class CallPhoneService implements Twilio.InitListener {
 			connection.disconnect();
 			connection = null;
 		}
+
 	}
 
 	public class TwilioConnectionListener implements ConnectionListener {
@@ -129,7 +139,7 @@ public class CallPhoneService implements Twilio.InitListener {
 			params.put("phoneNumber", callNumber);
 			params.put("userId", appValues.getCurrentUserId() + "");
 			params.put("deviceId", appValues.getDeviceId());
-			HttpUtils.get("http://10.200.0.157:82/loginfilter/AddRecord", params, new AsyncHttpResponseHandler());
+			HttpUtils.get(appValues.getServerPath() + "/loginfilter/AddRecord", params, new AsyncHttpResponseHandler());
 		}
 
 		@Override

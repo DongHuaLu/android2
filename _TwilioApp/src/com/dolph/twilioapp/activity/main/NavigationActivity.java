@@ -22,7 +22,10 @@ import com.dolph.twilioapp.R;
 import com.dolph.twilioapp.activity.call.CallActivity;
 import com.dolph.twilioapp.activity.contact.ContactListActivity;
 import com.dolph.twilioapp.activity.contact.NewContactActivity;
+import com.dolph.twilioapp.activity.more.MoreActivity;
+import com.dolph.twilioapp.activity.pay.PayActivity;
 import com.dolph.twilioapp.activity.record.RecordListActivity;
+import com.dolph.twilioapp.twilio.CallPhoneService;
 
 public class NavigationActivity extends FragmentActivity {
 
@@ -31,6 +34,8 @@ public class NavigationActivity extends FragmentActivity {
 	private final int CONTACTS_FRAGMENT = 3;
 	private final int PAY_FRAGMENT = 4;
 	private final int MORE_FRAGMENT = 5;
+	private static final int SESSION_ERR = 50;
+	private static final int UPDATE_SUCCESS = 52;
 
 	private Fragment lastFragment;
 	private Button btCall, btRecord, btContacts, btPay, btMore;
@@ -39,13 +44,14 @@ public class NavigationActivity extends FragmentActivity {
 
 	public void addContact(View view) {
 		Intent intent = new Intent(this, NewContactActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent, 0);
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_navigation);
+		CallPhoneService callService = CallPhoneService.getCallPhoneService(getApplicationContext());
 		btCall = (Button) findViewById(R.id.btCall);
 		btRecord = (Button) findViewById(R.id.btRecord);
 		btContacts = (Button) findViewById(R.id.btContacts);
@@ -271,8 +277,96 @@ public class NavigationActivity extends FragmentActivity {
 			moreLinearLayout.setBackgroundDrawable(null);
 			callLinearLayout.setBackgroundDrawable(null);
 			break;
+
+		case MORE_FRAGMENT:
+			if (fRecord != null) {
+				ft.hide(fRecord);
+			}
+			if (fContacts != null) {
+				ft.hide(fContacts);
+			}
+			if (fPay != null) {
+				ft.hide(fPay);
+			}
+			if (fCall != null) {
+				ft.hide(fCall);
+			}
+			if (fMore == null) {
+				fMore = Fragment.instantiate(this, MoreActivity.MoreFragment.class.getName());
+				ft.add(R.id.fMore, fMore);
+			} else {
+				ft.show(fMore);
+			}
+			ft.commit();
+			lastFragment = fMore;
+			moreFrameLayout.setVisibility(View.VISIBLE);
+			callFrameLayout.setVisibility(View.GONE);
+			recordFrameLayout.setVisibility(View.GONE);
+			contactFrameLayout.setVisibility(View.GONE);
+			payFrameLayout.setVisibility(View.GONE);
+			btMore.setBackgroundColor(Color.GREEN);
+			btCall.setBackgroundColor(Color.BLACK);
+			btContacts.setBackgroundColor(Color.BLACK);
+			btRecord.setBackgroundColor(Color.BLACK);
+			btPay.setBackgroundColor(Color.BLACK);
+			moreLinearLayout.setBackgroundResource(R.drawable.footer_menu_bg_select);
+			contactLinearLayout.setBackgroundDrawable(null);
+			payLinearLayout.setBackgroundDrawable(null);
+			callLinearLayout.setBackgroundDrawable(null);
+			recordLinearLayout.setBackgroundDrawable(null);
+			break;
+
+		case PAY_FRAGMENT:
+			if (fRecord != null) {
+				ft.hide(fRecord);
+			}
+			if (fContacts != null) {
+				ft.hide(fContacts);
+			}
+			if (fMore != null) {
+				ft.hide(fMore);
+			}
+			if (fCall != null) {
+				ft.hide(fCall);
+			}
+			if (fPay == null) {
+				fPay = Fragment.instantiate(this, PayActivity.PayFragment.class.getName());
+				ft.add(R.id.fPay, fPay);
+			} else {
+				ft.show(fPay);
+				RefreshListener f = (RefreshListener) fPay;
+				f.refreshView();
+			}
+			ft.commit();
+			lastFragment = fPay;
+			payFrameLayout.setVisibility(View.VISIBLE);
+			callFrameLayout.setVisibility(View.GONE);
+			recordFrameLayout.setVisibility(View.GONE);
+			contactFrameLayout.setVisibility(View.GONE);
+			moreFrameLayout.setVisibility(View.GONE);
+			btPay.setBackgroundColor(Color.GREEN);
+			btCall.setBackgroundColor(Color.BLACK);
+			btContacts.setBackgroundColor(Color.BLACK);
+			btRecord.setBackgroundColor(Color.BLACK);
+			btMore.setBackgroundColor(Color.BLACK);
+			payLinearLayout.setBackgroundResource(R.drawable.footer_menu_bg_select);
+			contactLinearLayout.setBackgroundDrawable(null);
+			moreLinearLayout.setBackgroundDrawable(null);
+			callLinearLayout.setBackgroundDrawable(null);
+			recordLinearLayout.setBackgroundDrawable(null);
+			break;
 		}
 
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == UPDATE_SUCCESS) {
+			btContacts.performClick();
+		} else if (resultCode == SESSION_ERR) {
+			finish();
+		}
 	}
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -299,4 +393,5 @@ public class NavigationActivity extends FragmentActivity {
 		});
 		return builder.create();
 	}
+
 }

@@ -29,10 +29,11 @@ import android.widget.Toast;
 
 import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
-import com.dolph.twilioapp.activity.contact.ContactActivity;
+import com.dolph.twilioapp.activity.login.LoginActivity;
 import com.dolph.twilioapp.activity.main.NavigationActivity.RefreshListener;
 import com.dolph.twilioapp.model.Record;
 import com.dolph.utils.HttpUtils;
+import com.dolph.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -53,7 +54,7 @@ public class RecordListActivity extends FragmentActivity {
 
 	public static class RecordListFragment extends Fragment implements RefreshListener {
 
-		private static final int REFRESH_VIEW = 1;
+		private static final int REFRESH_VIEW = 51;
 		private LinearLayout llRecordContent;
 		private LinearLayout linearLoading;
 		private LinearLayout noData;
@@ -92,7 +93,7 @@ public class RecordListActivity extends FragmentActivity {
 			params.put("deviceId", appValues.getDeviceId());
 			linearLoading.setVisibility(View.VISIBLE);
 			llRecordContent.setVisibility(View.GONE);
-			HttpUtils.get("http://10.200.0.157:82/loginfilter/RecordList?", params, new AsyncHttpResponseHandler() {
+			HttpUtils.get(appValues.getServerPath() + "/loginfilter/RecordList?", params, new AsyncHttpResponseHandler() {
 
 				@Override
 				public void onSuccess(String content) {
@@ -111,6 +112,8 @@ public class RecordListActivity extends FragmentActivity {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
+									startActivity(new Intent(getActivity(), LoginActivity.class));
+									getActivity().finish();
 								}
 							});
 							builder.show();
@@ -142,7 +145,7 @@ public class RecordListActivity extends FragmentActivity {
 											params.put("deviceId", appValues.getDeviceId());
 											params.put("recordId", deleteRecord.getId() + "");
 											pDialog = ProgressDialog.show(getActivity(), "删除", "正在删除...");
-											HttpUtils.get("http://10.200.0.157:82/loginfilter/DeleteRecord?", params, new AsyncHttpResponseHandler() {
+											HttpUtils.get(appValues.getServerPath() + "/loginfilter/DeleteRecord?", params, new AsyncHttpResponseHandler() {
 
 												@Override
 												public void onSuccess(String content) {
@@ -161,6 +164,8 @@ public class RecordListActivity extends FragmentActivity {
 
 																@Override
 																public void onClick(DialogInterface dialog, int which) {
+																	startActivity(new Intent(getActivity(), LoginActivity.class));
+																	getActivity().finish();
 																}
 															});
 															builder.show();
@@ -265,32 +270,11 @@ public class RecordListActivity extends FragmentActivity {
 				recordStartTime.setText(record.getStartTime());
 				recordName.setText(record.getName());
 				recordNumber.setText(record.getNumber());
-				recordDuration.setText(durationFormat(record.getDuration()));
+				recordDuration.setText(Utils.durationFormat(record.getDuration()/1000));
 				return view;
 			}
 
-			private String durationFormat(int duration) {
-				StringBuffer sb = new StringBuffer();
-				duration /= 1000;
-				if (duration > 3600) {
-					if (duration < 36000) {
-						sb.append("0" + duration / 3600 + ":");
-					} else {
-						sb.append(duration / 3600 + ":");
-					}
-				}
-				if ((duration % 3600) < 600) {
-					sb.append("0" + (duration % 3600) / 60 + ":");
-				} else {
-					sb.append((duration % 3600) / 60 + ":");
-				}
-				if (duration % 60 < 10) {
-					sb.append("0" + duration % 60);
-				} else {
-					sb.append(duration % 60);
-				}
-				return sb.toString();
-			}
+
 		}
 
 		@Override

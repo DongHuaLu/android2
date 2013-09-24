@@ -14,9 +14,12 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
+import com.dolph.twilioapp.activity.call.CallingActivity;
+import com.dolph.twilioapp.activity.login.LoginActivity;
 import com.dolph.twilioapp.model.Contact;
 import com.dolph.twilioapp.twilio.CallPhoneService;
 import com.dolph.utils.HttpUtils;
@@ -24,13 +27,13 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class ContactActivity extends Activity {
-	private static final int REFRESH_VIEW = 1;
-	private static final int UPDATE_SUCCESS = 2;
+	private static final int REFRESH_VIEW = 51;
+	private static final int UPDATE_SUCCESS = 52;
+	private static final int SESSION_ERR = 50;
 	private TextView contactName;
 	private TextView contactNumber;
 	private TextView contactAddress;
 	private Contact contact;
-	private CallPhoneService twilioService;
 	private AppValues appValues;
 
 	@Override
@@ -47,7 +50,6 @@ public class ContactActivity extends Activity {
 		contactName.setText(contact.getName());
 		contactNumber.setText(contact.getNumber());
 		contactAddress.setText(contact.getAddress());
-		twilioService = CallPhoneService.getCallPhoneService(this.getApplicationContext());
 	}
 
 	public void modifyContact(View view) {
@@ -63,32 +65,22 @@ public class ContactActivity extends Activity {
 			contactName.setText(data.getStringExtra("contactName"));
 			contactNumber.setText(data.getStringExtra("contactNumber"));
 			contactAddress.setText(data.getStringExtra("address"));
+		} else if (resultCode == SESSION_ERR) {
+			setResult(SESSION_ERR);
+			finish();
 		}
 	}
 
 	public void call(View view) {
 		String number = contactNumber.getText().toString();
-		// if (Utils.validatePhone(number)) {
-		if (true) {
-			try {
-				twilioService.connect(number);
-				new AlertDialog.Builder(this).setTitle("拨打中").setMessage("正在拨打" + number).setNegativeButton("挂断", new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						twilioService.disconnect();
-					}
-				}).create().show();
-			} catch (Exception e) {
-				new AlertDialog.Builder(this).setTitle("拨打失败").setNegativeButton("确定", new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				}).create().show();
-				e.printStackTrace();
-			}
+		if (number == null || "".equals(number.trim())) {
+			Toast.makeText(this, "号码为空", 0).show();
+		} else {
+			Intent calling = new Intent(this, CallingActivity.class);
+			calling.putExtra("number", number);
+			startActivity(calling);
 		}
+
 	}
 
 	public void deleteContact(View view) {
@@ -97,7 +89,7 @@ public class ContactActivity extends Activity {
 		params.put("deviceId", appValues.getDeviceId());
 		params.put("contactId", contact.getId() + "");
 
-		HttpUtils.get("http://10.200.0.157:82/loginfilter/DeleteContact?", params, new AsyncHttpResponseHandler() {
+		HttpUtils.get(appValues.getServerPath() + "/loginfilter/DeleteContact?", params, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(String content) {
@@ -115,6 +107,9 @@ public class ContactActivity extends Activity {
 
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
+								startActivity(new Intent(ContactActivity.this, LoginActivity.class));
+								setResult(SESSION_ERR);
+								finish();
 							}
 						});
 						builder.show();

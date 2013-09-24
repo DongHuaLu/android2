@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dolph.twilioapp.AppValues;
 import com.dolph.twilioapp.R;
 import com.dolph.utils.HttpUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -21,12 +22,13 @@ import com.loopj.android.http.RequestParams;
 public class GetRegisterCodeActivity extends Activity {
 	private ProgressDialog pDialog;
 	String phoneNumber;
+	private AppValues appValues;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_getregistercode);
-
+		appValues = new AppValues(this.getApplicationContext());
 	}
 
 	@Override
@@ -45,8 +47,7 @@ public class GetRegisterCodeActivity extends Activity {
 			Toast.makeText(this, "电话号码不能为空", 0).show();
 			return;
 		} else {
-			String url = "http://10.200.0.157:82/GetRegisterCode?"
-					+ phoneNumber;
+			String url = appValues.getServerPath() + "/GetRegisterCode?" + phoneNumber;
 			RequestParams params = new RequestParams();
 			params.put("mobile_phone", phoneNumber);
 			pDialog = ProgressDialog.show(this, "请稍等", "正在向服务器请求");
@@ -57,25 +58,22 @@ public class GetRegisterCodeActivity extends Activity {
 					super.onSuccess(content);
 					pDialog.dismiss();
 					if ("电话已经被注册".equals(content) || "电话不能为空".equals(content)) {
-						AlertDialog.Builder builder = new Builder(
-								GetRegisterCodeActivity.this);
+						AlertDialog.Builder builder = new Builder(GetRegisterCodeActivity.this);
 						builder.setTitle("提示");
 						builder.setMessage(content);
 						builder.setPositiveButton("确定", new OnClickListener() {
 
 							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
+							public void onClick(DialogInterface dialog, int which) {
 							}
 						});
 						builder.show();
 					} else {
-						Intent intent = new Intent(
-								GetRegisterCodeActivity.this,
-								RegisterActivity.class);
+						Intent intent = new Intent(GetRegisterCodeActivity.this, RegisterActivity.class);
 						intent.putExtra("code", content);
 						intent.putExtra("mobile_phone", phoneNumber);
 						startActivity(intent);
+						finish();
 					}
 				}
 
@@ -83,8 +81,7 @@ public class GetRegisterCodeActivity extends Activity {
 				public void onFailure(Throwable error, String content) {
 					super.onFailure(error, content);
 					pDialog.dismiss();
-					Toast.makeText(GetRegisterCodeActivity.this, "连接错误", 0)
-							.show();
+					Toast.makeText(GetRegisterCodeActivity.this, "连接错误", 0).show();
 				}
 			});
 		}

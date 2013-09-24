@@ -26,117 +26,30 @@ public class Utils {
 		this.context = context;
 	}
 
-	public static boolean isDeviceDissociated(String result)
-			throws JSONException {
-		JSONObject jsonObj = new JSONObject(result);
-		if (jsonObj.has("errno")) {
-			if (jsonObj.getString("errno").equalsIgnoreCase("dm003")) {
-				return true;
-			}
-		}
-		return false;
-
-	}
-
-	public static boolean isMobilePhoneValidated(String result)
-			throws JSONException {
-		JSONObject jsonObj = new JSONObject(result);
-		if (jsonObj.has("errno")) {
-			if (jsonObj.getString("errno").equalsIgnoreCase("ge005")) {
-				return true;
-			}
-		}
-		return false;
-
-	}
-
-	public static String stream2String(InputStream is) {
+	public static String durationFormat(int duration) {
 		StringBuffer sb = new StringBuffer();
-		try {
-			int i = -1;
-			byte[] b = new byte[1024];
-			while ((i = is.read(b)) != -1) {
-				sb.append(new String(b, 0, i));
+		if (duration > 3600) {
+			if (duration < 36000) {
+				sb.append("0" + duration / 3600 + ":");
+			} else {
+				sb.append(duration / 3600 + ":");
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
+		}
+		if ((duration % 3600) < 600) {
+			sb.append("0" + (duration % 3600) / 60 + ":");
+		} else {
+			sb.append((duration % 3600) / 60 + ":");
+		}
+		if (duration % 60 < 10) {
+			sb.append("0" + duration % 60);
+		} else {
+			sb.append(duration % 60);
 		}
 		return sb.toString();
-
-	}
-
-	public static boolean validatePhone(String phone) {
-		if (phone.equals("") || phone == null) {
-			return false;
-		}
-		Pattern pat = Pattern
-				.compile(
-						"(?<!\\d{1})(?<!\\+)(((\\+?1)[\\s,-]{1})?(\\(\\d{3}\\)|\\d{3})[\\s,-]{1}\\d{3}[\\s,-]\\d{4}|(\\+?1)?\\d{10})(?!\\d{1})",
-						Pattern.CASE_INSENSITIVE);
-
-		Matcher matcher = pat.matcher(phone);
-		if (matcher.matches()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public static boolean validateEmail(String email) {
-		if (email.equals("") || email == null) {
-			return false;
-		}
-		Pattern pat = Pattern
-				.compile(
-						"^[A-Za-z0-9+]+[A-Za-z0-9\\.\\_\\-+]*@([A-Za-z0-9\\-]+\\.)+[A-Za-z0-9]+$",
-						Pattern.CASE_INSENSITIVE);
-
-		Matcher matcher = pat.matcher(email);
-		if (matcher.matches()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public static boolean validateURLIP(String url) {
-		if (url == null || "".equals(url)) {
-			return false;
-		}
-		Pattern pat = Pattern
-				.compile(
-						"^(http[s]{0,1}://)?((([\\w-]+\\.)+((com)|(net)|(org)|(gov\\.cn)|(info)|(cc)|(com\\.cn)|(net\\.cn)|(org\\.cn)|(name)|(biz)|(tv)|(cn)|(mobi)|(name)|(sh)|(ac)|(io)|(tw)|(com\\.tw)|(hk)|(com\\.hk)|(ws)|(travel)|(us)|(tm)|(la)|(me\\.uk)|(org\\.uk)|(ltd\\.uk)|(plc\\.uk)|(in)|(eu)|(it)|(jp)))|(((25[0-5])|(2[0-4]\\d)|(1\\d\\d)|([1-9]\\d)|\\d)(\\.((25[0-5])|(2[0-4]\\d)|(1\\d\\d)|([1-9]\\d)|\\d)){3}))(:([0-9]|[1-9]\\d|[1-9]\\d{2}|[1-9]\\d{3}|[1-5]\\d{4}|6[0-4]\\d{3}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5]))?/?$",
-						Pattern.CASE_INSENSITIVE);
-
-		Matcher matcher = pat.matcher(url);
-		if (matcher.matches()) {
-			return true;
-		} else {
-			return false;
-		}
-
-	}
-
-	public static String getNumberOfPhone(String phone) {
-		return phone.replaceAll("\\(", "").replaceAll("\\) ", "")
-				.replaceAll("-", "");
-	}
-
-	public static String getDateFormat(long timeStamp, String timezone) {
-		TimeZone timeZone = TimeZone.getTimeZone(timezone);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(timeStamp);
-		calendar.setTimeZone(timeZone);
-		CharSequence dateTime;
-		dateTime = android.text.format.DateFormat
-				.format("MM/dd/yyyy", calendar);
-		return dateTime.toString();
 	}
 
 	public boolean checkNetworkAvailable() {
-		ConnectivityManager connMgr = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 		if (networkInfo != null && networkInfo.isConnected()) {
 			return true;
@@ -146,34 +59,4 @@ public class Utils {
 
 	}
 
-	static public SparseArray<String> getNumbers(String content) {
-		SparseArray<String> digitList = new SparseArray<String>();
-		Pattern p = Pattern
-				.compile(
-						"(?<!\\d{1})(?<!\\+)(((\\+?1)[\\s,-]{1})?(\\(\\d{3}\\)|\\d{3})[\\s,-]{1}\\d{3}[\\s,-]\\d{4}|(\\+?1)?\\d{10})(?!\\d{1})",
-						Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(content);
-		while (m.find()) {
-			int start = m.start();
-			String find = m.group().toString();
-			digitList.put(start, find);
-		}
-		return digitList;
-	}
-
-	@SuppressWarnings("deprecation")
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public void copy(String txt) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-			android.text.ClipboardManager mClipboardManager = (android.text.ClipboardManager) context
-					.getSystemService(Context.CLIPBOARD_SERVICE);
-			mClipboardManager.setText(txt);
-		} else {
-			android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context
-					.getSystemService(Context.CLIPBOARD_SERVICE);
-			clipboard.setPrimaryClip(android.content.ClipData.newPlainText(
-					"simple text", txt));
-		}
-
-	}
 }

@@ -15,8 +15,23 @@ public class AppValues {
 	private static String currentUserName;
 	private static String currentPhoneNumber;
 	private static String currentPassword;
-	private static boolean logined = false;
+	private static boolean logouted = false;
 	private static String deviceId;
+	private static String serverPath;
+	private static boolean rememberMe;
+	private static boolean autoLogin;
+
+	public String getServerPath() {
+		if (serverPath == null || "".equals(serverPath)) {
+			serverPath = setting.getSettingString("serverPath", "");
+		}
+		return serverPath;
+	}
+
+	public void setServerPath(String deviceId) {
+		setting.setSettingsString("serverPath", deviceId);
+		AppValues.serverPath = deviceId;
+	}
 
 	public String getDeviceId() {
 		if (deviceId == null || "".equals(deviceId)) {
@@ -77,13 +92,31 @@ public class AppValues {
 		AppValues.currentUserId = currentUserId;
 	}
 
-	public boolean isLogined() {
-		logined = setting.getSettingBoolean("logined", false);
-		return logined;
+	public boolean isLogouted() {
+		logouted = setting.getSettingBoolean("logouted", false);
+		return logouted;
 	}
 
-	public void setLogined(boolean logined) {
-		setting.setSettingsBoolean("logined", logined);
+	public void setLogouted(boolean logouted) {
+		setting.setSettingsBoolean("logouted", logouted);
+	}
+
+	public boolean isRememberMe() {
+		rememberMe = setting.getSettingBoolean("rememberMe", false);
+		return rememberMe;
+	}
+
+	public void setRememberMe(boolean rememberMe) {
+		setting.setSettingsBoolean("rememberMe", rememberMe);
+	}
+
+	public boolean isAutoLogin() {
+		autoLogin = setting.getSettingBoolean("autoLogin", false);
+		return autoLogin;
+	}
+
+	public void setAutoLogin(boolean autoLogin) {
+		setting.setSettingsBoolean("autoLogin", autoLogin);
 	}
 
 }
